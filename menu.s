@@ -13,7 +13,7 @@ status_path:
     bl sensor_ok_screen
 
     cmp r3, #1
-    beq app
+    beq end @ beq app
 
 measure_path:
     bl measurement_type_screen
@@ -33,7 +33,7 @@ temperature_measure_path:
     temp_normal:
         bl temperature_screen
         cmp r3, #1
-        beq app
+        beq end @ beq app
 
     temp_cont:
         bl cont_temperature_screen
@@ -50,7 +50,7 @@ humidity_measure_path:
     humi_normal:
         bl humidity_screen
         cmp r3, #1
-        beq app
+        beq end @ beq app
 
     humi_cont:
         bl cont_humidity_screen
@@ -66,6 +66,9 @@ print:
     bx lr
 
 main_screen:
+    sub sp, sp, #4
+    str lr, [sp]
+
     ldr r1, =status
     mov r2, #14
     bl print
@@ -73,6 +76,9 @@ main_screen:
     ldr r1, =measure
     mov r2, #15
     bl print
+
+    ldr lr, [sp]
+    add sp, sp, #4
 
     mov r3, #1
     bx lr
@@ -82,6 +88,9 @@ status_screen:
     bl print
 
 measurement_screen:
+    sub sp, sp, #4
+    str lr, [sp]
+
     ldr r1, =current_measure
     mov r2, #16
     bl print
@@ -90,10 +99,16 @@ measurement_screen:
     mov r2, #17
     bl print
 
+    ldr lr, [sp]
+    add sp, sp, #4
+
     mov r3, #1
     bx lr
 
 measurement_type_screen:
+    sub sp, sp, #4
+    str lr, [sp]
+
     ldr r1, =temperature_measure
     mov r2, #16
     bl print
@@ -102,10 +117,16 @@ measurement_type_screen:
     mov r2, #16
     bl print
 
+    ldr lr, [sp]
+    add sp, sp, #4
+
     mov r3, #1
     bx lr
 
 cont_humidity_screen:
+    sub sp, sp, #4
+    str lr, [sp]
+
     ldr r1, =humidity
     mov r2, #8
     bl print
@@ -113,11 +134,17 @@ cont_humidity_screen:
     ldr r1, =stop_continuous
     mov r2, #14
     bl print
+
+    ldr lr, [sp]
+    add sp, sp, #4
 
     mov r3, #1
     bx lr
 
 cont_temperature_screen:
+    sub sp, sp, #4
+    str lr, [sp]
+
     ldr r1, =temperature
     mov r2, #8
     bl print
@@ -126,10 +153,16 @@ cont_temperature_screen:
     mov r2, #14
     bl print
 
+    ldr lr, [sp]
+    add sp, sp, #4
+
     mov r3, #1
     bx lr
 
 humidity_screen:
+    sub sp, sp, #4
+    str lr, [sp]
+
     ldr r1, =humidity
     mov r2, #8
     bl print
@@ -138,10 +171,16 @@ humidity_screen:
     mov r2, #15
     bl print
 
+    ldr lr, [sp]
+    add sp, sp, #4
+
     mov r3, #1
     bx lr
 
 temperature_screen:
+    sub sp, sp, #4
+    str lr, [sp]
+
     ldr r1, =temperature
     mov r2, #8
     bl print
@@ -150,10 +189,16 @@ temperature_screen:
     mov r2, #15
     bl print
 
+    ldr lr, [sp]
+    add sp, sp, #4
+
     mov r3, #1
     bx lr
 
 sensor_not_ok_screen:
+    sub sp, sp, #4
+    str lr, [sp]
+
     ldr r1, =sensor_not_ok
     mov r2, #14
     bl print
@@ -162,10 +207,16 @@ sensor_not_ok_screen:
     mov r2, #15
     bl print
 
+    ldr lr, [sp]
+    add sp, sp, #4
+
     mov r3, #1
     bx lr
 
 sensor_ok_screen:
+    sub sp, sp, #4
+    str lr, [sp]
+
     ldr r1, =sensor_ok
     mov r2, #10
     bl print
@@ -173,6 +224,9 @@ sensor_ok_screen:
     ldr r1, =back_menu
     mov r2, #15
     bl print
+
+    ldr lr, [sp]
+    add sp, sp, #4
 
     mov r3, #1
     bx lr
