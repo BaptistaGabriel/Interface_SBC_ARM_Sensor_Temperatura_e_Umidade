@@ -1,7 +1,61 @@
 .global _start
 _start:
 
-b sensor_ok_screen
+app:
+    bl main_screen
+
+    cmp r3, #2
+    beq status_path
+    b measure_path
+
+
+status_path:
+    bl sensor_ok_screen
+
+    cmp r3, #1
+    beq app
+
+measure_path:
+    bl measurement_type_screen
+
+    cmp r3, #1
+    beq temperature_measure_path
+    b humidity_measure_path
+
+
+temperature_measure_path:
+    bl measurement_screen
+
+    cmp r3, #1
+    beq temp_normal
+    b temp_cont
+
+    temp_normal:
+        bl temperature_screen
+        cmp r3, #1
+        beq app
+
+    temp_cont:
+        bl cont_temperature_screen
+        cmp r3, #1
+        beq temp_normal
+
+humidity_measure_path:
+    bl measurement_screen
+
+    cmp r3, #1
+    beq humi_normal
+    b humi_cont
+
+    humi_normal:
+        bl humidity_screen
+        cmp r3, #1
+        beq app
+
+    humi_cont:
+        bl cont_humidity_screen
+        cmp r3, #1
+        beq humi_normal
 
 @ printar
 print:
@@ -20,7 +74,8 @@ main_screen:
     mov r2, #15
     bl print
 
-    b end
+    mov r3, #1
+    bx lr
 
 status_screen:
     ldr r1, =status
@@ -35,7 +90,8 @@ measurement_screen:
     mov r2, #17
     bl print
 
-    b end
+    mov r3, #1
+    bx lr
 
 measurement_type_screen:
     ldr r1, =temperature_measure
@@ -46,7 +102,8 @@ measurement_type_screen:
     mov r2, #16
     bl print
 
-    b end
+    mov r3, #1
+    bx lr
 
 cont_humidity_screen:
     ldr r1, =humidity
@@ -57,7 +114,8 @@ cont_humidity_screen:
     mov r2, #14
     bl print
 
-    b end
+    mov r3, #1
+    bx lr
 
 cont_temperature_screen:
     ldr r1, =temperature
@@ -68,7 +126,8 @@ cont_temperature_screen:
     mov r2, #14
     bl print
 
-    b end
+    mov r3, #1
+    bx lr
 
 humidity_screen:
     ldr r1, =humidity
@@ -79,7 +138,8 @@ humidity_screen:
     mov r2, #15
     bl print
 
-    b end
+    mov r3, #1
+    bx lr
 
 temperature_screen:
     ldr r1, =temperature
@@ -90,7 +150,8 @@ temperature_screen:
     mov r2, #15
     bl print
 
-    b end
+    mov r3, #1
+    bx lr
 
 sensor_not_ok_screen:
     ldr r1, =sensor_not_ok
@@ -101,7 +162,8 @@ sensor_not_ok_screen:
     mov r2, #15
     bl print
 
-    b end
+    mov r3, #1
+    bx lr
 
 sensor_ok_screen:
     ldr r1, =sensor_ok
@@ -112,7 +174,8 @@ sensor_ok_screen:
     mov r2, #15
     bl print
 
-    b end
+    mov r3, #1
+    bx lr
 
 end: @fechar o processo
     mov r0, #0
