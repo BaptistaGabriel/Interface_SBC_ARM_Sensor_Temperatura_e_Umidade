@@ -13,11 +13,11 @@ print:
 
 main_screen:
     ldr r1, =status
-    mov r2, #19
+    mov r2, #14
     bl print
 
     ldr r1, =measure
-    mov r2, #20
+    mov r2, #15
     bl print
 
     b end
@@ -32,7 +32,40 @@ measurement_screen:
     bl print
 
     ldr r1, =continuous_measure
-    mov r2, #20
+    mov r2, #17
+    bl print
+
+    b end
+
+measurement_type_screen:
+    ldr r1, =temperature_measure
+    mov r2, #16
+    bl print
+
+    ldr r1, =humidity_measure
+    mov r2, #16
+    bl print
+
+    b end
+
+cont_humidity_screen:
+    ldr r1, =humidity
+    mov r2, #8
+    bl print
+
+    ldr r1, =stop_continuous
+    mov r2, #14
+    bl print
+
+    b end
+
+cont_temperature_screen:
+    ldr r1, =temperature
+    mov r2, #8
+    bl print
+
+    ldr r1, =stop_continuous
+    mov r2, #14
     bl print
 
     b end
@@ -43,7 +76,7 @@ humidity_screen:
     bl print
 
     ldr r1, =back_menu
-    mov r2, #13
+    mov r2, #15
     bl print
 
     b end
@@ -54,7 +87,7 @@ temperature_screen:
     bl print
 
     ldr r1, =back_menu
-    mov r2, #13
+    mov r2, #15
     bl print
 
     b end
@@ -65,7 +98,7 @@ sensor_not_ok_screen:
     bl print
 
     ldr r1, =back_menu
-    mov r2, #13
+    mov r2, #15
     bl print
 
     b end
@@ -76,7 +109,7 @@ sensor_ok_screen:
     bl print
 
     ldr r1, =back_menu
-    mov r2, #13
+    mov r2, #15
     bl print
 
     b end
@@ -89,13 +122,15 @@ end: @fechar o processo
 
 .data 
 value: .ascii "helloworld\n"
-status: .ascii "Status Requisition\n"
-measure: .ascii "Measure Requisition\n"
-current_measure: .ascii "Current Measure\n"
-continuous_measure: .ascii "Continuous Measure\n"
+status: .ascii "1.Status Req.\n"
+measure: .ascii "2.Measure Req.\n"
+current_measure: .ascii "1.Current Measu.\n"
+continuous_measure: .ascii "2.Contin. Measu.\n"
+temperature_measure: .ascii "1.Temp. Measure\n"
+humidity_measure: .ascii "2.Humi. Measure\n"
 temperature: .ascii "T:21.0C\n"
 humidity: .ascii "H:45.0%\n"
-back_menu: .ascii "Back to Menu\n"
+back_menu: .ascii "1.Back to Menu\n"
+stop_continuous: .ascii "1.Stop conti.\n"
 sensor_ok: .ascii "Sensor OK\n"
 sensor_not_ok: .ascii "Sensor not OK\n"
-
