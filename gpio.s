@@ -43,7 +43,7 @@ pinOutput:
     @ r0 deve receber o endereço base dos offsets dos pinos
     @ exemplo: ldr r0, =pg7
 
-    ldr r1, [r0] @ carrega o offset do registrador de configuração do pino
+    ldr r1, [r0, #0] @ carrega o offset do registrador de configuração do pino
     ldr r3, [r0, #4] @ carrega o offset >> no << registrador de configuração do pino
     ldr r2, [r8, r1] @ carrega o registrador de configuração do pino
     
@@ -53,9 +53,9 @@ pinOutput:
     mov r0, #0xb111
     lsl r0, r3
     bic r2, r0
-    mov r4, #1
-    lsl r4, r3
-    orr r2, r4
+    mov r0, #1
+    lsl r0, r3
+    orr r2, r0
 
     @ guardando novamente na memória
     str r2, [r8, r1]
