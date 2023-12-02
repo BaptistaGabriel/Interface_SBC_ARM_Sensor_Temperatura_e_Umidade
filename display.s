@@ -1,4 +1,28 @@
-.include "gpio.s"
+enable:
+    sub sp, sp, #4
+    str lr, [sp]
+
+    ldr r0, =E
+    bl setPinLow
+
+    r0, =t0s
+    r1, =t1ms
+    bl nanoSleep
+
+    ldr r0, =E
+    bl setPinHigh
+
+    r0, =t0s
+    r1, =t1ms
+    bl nanoSleep
+
+    ldr r0, =E
+    bl setPinLow
+
+    ldr lr, [sp]
+    add sp, sp, #4
+
+    bx lr
 
 setPinsLow:
     sub sp, sp, #4
@@ -47,8 +71,11 @@ initializeDisplay:
     @////////////////////////////////////////////
 
 
-    @ enable
-    @ delay
+    bl enable
+
+    r0, =t0s
+    r1, =t5ms
+    bl nanoSleep
 
     @ /////////////// function set - 8 bits ///////////////
     ldr r0, =D4
@@ -65,8 +92,11 @@ initializeDisplay:
     @////////////////////////////////////////////
 
     
-    @ enable
-    @ delay
+    bl enable
+
+    r0, =t0s
+    r1, =t5ms
+    bl nanoSleep
 
 
     @ /////////////// function set - 8 bits ///////////////
@@ -204,7 +234,7 @@ initializeDisplay:
     bl setPinLow
     @////////////////////////////////////////////
 
-    @ enable
+    bl enable
     @ delay
 
     ldr lr, [sp]
@@ -232,12 +262,12 @@ clearDisplay:
     ldr r0, =D7
     bl setPinLow
 
-    @ enable
+    bl enable
 
     ldr r0, =D4
     bl setPinHigh
 
-    @ enable
+    bl enable
 
     ldr lr, [sp]
     add sp, sp, #4
@@ -269,7 +299,7 @@ writeChar:
     ldr r5, =D4
     bl setCondPinState
 
-    @ enable
+    bl enable
 
     mov r2, #3
     ldr r5, =D7
@@ -287,7 +317,7 @@ writeChar:
     ldr r5, =D4
     bl setCondPinState
 
-    @enable
+    bl enable
 
     ldr lr, [sp]
     add sp, sp, #4
