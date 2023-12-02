@@ -4,6 +4,10 @@ _start
 
 
 .data
+    devMem: .asciz "/dev/mem" 
+    gpioaddr: .word 0x1C20 
+    pagelen: .word 0x1000 
+
     t0s: .word 0
     t1s: .word 1
     t1ms: .word 1000000
