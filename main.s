@@ -52,3 +52,27 @@ _start
         .word 0x8 @ offset >> no << registrador de configuração
         .word 0x10 @ offset do registrador de dados
         .word 0x2 @ offset >> no << registrador de dados
+
+
+    @ ///////////////////////////////////////////////////////////
+    @ //              Pinos referentes aos botões              //
+    @ ///////////////////////////////////////////////////////////
+
+	BTN1: @PA10
+		.word 0x4
+		.word 0x8
+		.word 0x10
+        .word 0xA
+
+	BTN2: @PA20
+		.word 0x8
+		.word 0x10
+		.word 0x10
+        .word 0x14
+
+	BTN3: @PA7
+		.word 0x0
+		.word 0x1C
+		.word 0x10
+        .word 0x7
+        
