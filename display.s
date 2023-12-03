@@ -243,6 +243,40 @@ initializeDisplay:
     bx lr
 
 
+setSecondLine:
+    sub sp, sp, #4
+    str lr, [sp]
+
+    ldr r0, =RS
+    bl setPinLow
+
+    ldr r0, =D4
+    bl setPinLow
+
+    ldr r0, =D5
+    bl setPinHigh
+
+    ldr r0, =D6
+    bl setPinLow
+
+    ldr r0, =D7
+    bl setPinLow
+
+    bl enable
+
+    ldr r0, =D5
+    bl setPinLow
+
+    ldr r0, =D7
+    bl setPinHigh
+
+    bl enable
+
+    ldr lr, [sp]
+    add sp, sp, #4
+
+    bx lr
+
 clearDisplay:
     sub sp, sp, #4
     str lr, [sp]
