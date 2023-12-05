@@ -1,6 +1,6 @@
 .global _start
 
-_start
+_start:
 
 
 .data
@@ -41,7 +41,7 @@ _start
         .word 0xE8 @ offset do registrador de dados
         .word 0x9 @ offset >> no << registrador de dados
 
-    E: @PA18 ABLE
+    E: @PA18 ENABLE
         .word 0x8 @ offset do registrador de configuração
         .word 0x8 @ offset >> no << registrador de configuração
         .word 0x10 @ offset do registrador de dados
