@@ -12,6 +12,7 @@ _start:
     t1s: .word 1
     t1ms: .word 1000000
     t5ms: .word 5000000
+    t15ms: .word 15000000
     t150us: .word 150000
 
 

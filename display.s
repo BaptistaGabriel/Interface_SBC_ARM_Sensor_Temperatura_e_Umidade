@@ -24,219 +24,178 @@ enable:
 
     bx lr
 
-setPinsLow:
+
+setPinsOut:
     sub sp, sp, #4
     str lr, [sp]
 
     ldr r0, =RS
-    bl setPinLow
+    bl setPinOut
 
     ldr r0, =D4
-    bl setPinLow
+    bl setPinOut
 
     ldr r0, =D5
-    bl setPinLow
+    bl setPinOut
 
     ldr r0, =D6
-    bl setPinLow
+    bl setPinOut
 
     ldr r0, =D7
-    bl setPinLow
+    bl setPinOut
 
     ldr lr, [sp]
     add sp, sp, #4
 
     bx lr
 
+setPinsValues:
+    @ r2 - estado rs
+    @ r3 - estado d7
+    @ r4 - estado d6
+    @ r5 - estado d5
+    @ r6 - estado d4
+
+    sub sp, sp, #4
+    str lr, [sp]
+
+    ldr r0, =RS
+    mov r1, r2
+    bl setPinState
+
+    ldr r0, =D7
+    mov r1, r3
+    bl setPinState
+
+    ldr r0, =D6
+    mov r1, r4
+    bl setPinState
+
+    ldr r0, =D5
+    mov r1, r5
+    bl setPinState
+
+    ldr r0, =D4
+    mov r1, r6
+    bl setPinState
+
+    
+    ldr lr, [sp]
+    add sp, sp, #4
+    bx lr
 
 initializeDisplay:
     sub sp, sp, #4
     str lr, [sp]
 
-    ldr r0, =RS
-    bl setPinLow
-
-    @ /////////////// function set - 8 bits ///////////////
-    ldr r0, =D4
-    bl setPinHigh
-
-    ldr r0, =D5
-    bl setPinHigh
-
-    ldr r0, =D6
-    bl setPinLow
-
-    ldr r0, =D7
-    bl setPinLow
-    @////////////////////////////////////////////
-
-
-    bl enable
-
-    r0, =t0s
-    r1, =t5ms
+    mov r0, =t0s
+    mov r1, =t15ms
     bl nanoSleep
 
-    @ /////////////// function set - 8 bits ///////////////
-    ldr r0, =D4
-    bl setPinHigh
-
-    ldr r0, =D5
-    bl setPinHigh
-
-    ldr r0, =D6
-    bl setPinLow
-
-    ldr r0, =D7
-    bl setPinLow
-    @////////////////////////////////////////////
-
-    
+    mov r2, #0
+    mov r3, #0
+    mov r4, #0
+    mov r5, #1
+    mov r6, #1
+    bl setPinsValues
     bl enable
 
-    r0, =t0s
-    r1, =t5ms
+    mov r0, =t0s
+    mov r1, =t5ms
     bl nanoSleep
 
-
-    @ /////////////// function set - 8 bits ///////////////
-    ldr r0, =D4
-    bl setPinHigh
-
-    ldr r0, =D5
-    bl setPinHigh
-
-    ldr r0, =D6
-    bl setPinLow
-
-    ldr r0, =D7
-    bl setPinLow
-    @////////////////////////////////////////////
-
-
-
-    @ /////////////// function set - 4 bits ///////////////
-    ldr r0, =D4
-    bl setPinLow
-
-    ldr r0, =D5
-    bl setPinHigh
-
-    ldr r0, =D6
-    bl setPinLow
-
-    ldr r0, =D7
-    bl setPinLow
-    @////////////////////////////////////////////
-
-
-    @////////////////////////////////////////////
-    ldr r0, =D4
-    bl setPinLow
-
-    ldr r0, =D5
-    bl setPinLow
-
-    ldr r0, =D6
-    bl setPinLow
-
-    ldr r0, =D7
-    bl setPinHigh
-    @////////////////////////////////////////////
-
-
-    @////////////////////////////////////////////
-    ldr r0, =D4
-    bl setPinLow
-
-    ldr r0, =D5
-    bl setPinLow
-
-    ldr r0, =D6
-    bl setPinLow
-
-    ldr r0, =D7
-    bl setPinLow
-    @////////////////////////////////////////////
-
-    
-    @////////////////////////////////////////////
-    ldr r0, =D4
-    bl setPinLow
-
-    ldr r0, =D5
-    bl setPinLow
-
-    ldr r0, =D6
-    bl setPinLow
-
-    ldr r0, =D7
-    bl setPinHigh
-    @////////////////////////////////////////////
-
-
-    @////////////////////////////////////////////
-    ldr r0, =D4
-    bl setPinLow
-
-    ldr r0, =D5
-    bl setPinLow
-
-    ldr r0, =D6
-    bl setPinLow
-
-    ldr r0, =D7
-    bl setPinLow
-    @////////////////////////////////////////////
-
-    
-    @////////////////////////////////////////////
-    ldr r0, =D4
-    bl setPinHigh
-
-    ldr r0, =D5
-    bl setPinLow
-
-    ldr r0, =D6
-    bl setPinLow
-
-    ldr r0, =D7
-    bl setPinLow
-    @////////////////////////////////////////////
-
-    
-    @////////////////////////////////////////////
-    ldr r0, =D4
-    bl setPinLow
-
-    ldr r0, =D5
-    bl setPinLow
-
-    ldr r0, =D6
-    bl setPinLow
-
-    ldr r0, =D7
-    bl setPinLow
-    @////////////////////////////////////////////
-
-    
-    @////////////////////////////////////////////
-    ldr r0, =D4
-    bl setPinHigh
-
-    ldr r0, =D5
-    bl setPinHigh
-
-    ldr r0, =D6
-    bl setPinHigh
-
-    ldr r0, =D7
-    bl setPinLow
-    @////////////////////////////////////////////
-
+    mov r2, #0
+    mov r3, #0
+    mov r4, #0
+    mov r5, #1
+    mov r6, #1
+    bl setPinsValues
     bl enable
-    @ delay
+    
+    mov r0, =t0s
+    mov r1, =t1ms
+    bl nanoSleep
 
+    mov r2, #0
+    mov r3, #0
+    mov r4, #0
+    mov r5, #1
+    mov r6, #1
+    bl setPinsValues
+    bl enable
+
+    mov r2, #0
+    mov r3, #0
+    mov r4, #0
+    mov r5, #1
+    mov r6, #0
+    bl setPinsValues
+    bl enable
+
+    mov r2, #0
+    mov r3, #0
+    mov r4, #0
+    mov r5, #1
+    mov r6, #0
+    bl setPinsValues
+    bl enable
+
+    mov r2, #0
+    mov r3, #1
+    mov r4, #0
+    mov r5, #0
+    mov r6, #0
+    bl setPinsValues
+    bl enable
+
+    mov r2, #0
+    mov r3, #0
+    mov r4, #0
+    mov r5, #0
+    mov r6, #0
+    bl setPinsValues
+    bl enable
+
+    mov r2, #0
+    mov r3, #1
+    mov r4, #0
+    mov r5, #0
+    mov r6, #0
+    bl setPinsValues
+    bl enable
+
+    mov r2, #0
+    mov r3, #0
+    mov r4, #0
+    mov r5, #0
+    mov r6, #0
+    bl setPinsValues
+    bl enable
+
+    mov r2, #0
+    mov r3, #0
+    mov r4, #0
+    mov r5, #0
+    mov r6, #1
+    bl setPinsValues
+    bl enable
+
+    mov r2, #0
+    mov r3, #0
+    mov r4, #0
+    mov r5, #0
+    mov r6, #0
+    bl setPinsValues
+    bl enable
+
+    mov r2, #0
+    mov r3, #0
+    mov r4, #1
+    mov r5, #1
+    mov r6, #0
+    bl setPinsValues
+    bl enable
+    
     ldr lr, [sp]
     add sp, sp, #4
 
