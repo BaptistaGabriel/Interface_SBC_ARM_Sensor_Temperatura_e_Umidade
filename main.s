@@ -1,7 +1,51 @@
 .global _start
 
 _start:
+    bl mapMemory
 
+    @ seta o led azul pra output
+    ldr r0, =PA9
+    bl pinOutput
+
+    @ seta o botão 1 pra input
+    ldr r0, =BTN1
+    bl pinInput
+
+    @ permanece no waitBtnLoop até o usuário apertar o botão
+    waitBtnLoop:
+        ldr r0, =BTN1
+        bl getPinState
+
+        beq r1, loop
+        b waitBtnLoop 
+
+    @ pisca pisca (1 segundo apagado/1 segundo aceso)
+    loop:
+        @ liga
+        ldr r0, =PA9
+        bl setPinLow
+
+        ldr r0, =t1s
+        bl nanoSleep
+
+        @ desliga
+        ldr r0, =PA9
+        bl setPinHigh
+
+        ldr r0, =t1s
+        bl nanoSleep
+
+        @ assim que o botão 2 for apertado fecha o programa
+        ldr r0, =BTN2
+        bl getPinState
+
+        beq r1, exit 
+        b loop
+
+exit:
+    mov r0, #0
+    mov r7, #1
+    svc 0
 
 .data
     devMem: .asciz "/dev/mem" 
