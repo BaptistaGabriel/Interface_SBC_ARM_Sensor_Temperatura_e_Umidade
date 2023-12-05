@@ -12,6 +12,26 @@ _start:
     t1s: .word 1
     t1ms: .word 1000000
     t5ms: .word 5000000
+    t150us: .word 150000
+
+
+    @ ///////////////////////////////////////////////////////////
+    @ // Pinos referentes aos LEDS azul e vermelho da orangepi //
+    @ //                                                       //
+    @ //                      Remover depois                   //
+    @ ///////////////////////////////////////////////////////////
+
+    PA9: @ LED Azul
+        .word 0x4
+        .word 0x4
+        .word 0x10
+        .word 0x9
+
+    PA8: @ LED Vermelho
+        .word 0x4
+        .word 0
+        .word 0x10
+        .word 0x8
 
     @ ///////////////////////////////////////////////////////////
     @ // Pinos referentes a d7, d6, d5, d4, RS e Enable do LCD //
