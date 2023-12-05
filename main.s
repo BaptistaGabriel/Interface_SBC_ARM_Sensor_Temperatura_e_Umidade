@@ -1,7 +1,15 @@
 .global _start
 
 _start:
+    bl mapMemory
+    bl initializeDisplay
+    bl setPinsOut
+    bl moveSecondLine
 
+exit:
+    mov r0, #0
+    mov r7, #1
+    svc 0
 
 .data
     devMem: .asciz "/dev/mem" 
