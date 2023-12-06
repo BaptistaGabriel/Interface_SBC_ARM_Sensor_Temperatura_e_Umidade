@@ -14,6 +14,7 @@ exit:
 .data
     devMem: .asciz "/dev/mem" 
     gpioaddr: .word 0x1C20 
+    uartaddr: .word 0x1C28
     pagelen: .word 0x1000 
 
     t0s: .word 0
