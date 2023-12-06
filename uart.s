@@ -20,6 +20,25 @@ mapMemoryUart:
 
     bx lr
 
+setPinToUART:
+    @ r0 - pino
+    @ deve ser usado no PA13 e no PA14
+
+    ldr r1, [r0]
+    ldr r3, [r0, #4]
+    ldr r2, [r8, r1]
+
+    mov r4, #0b111
+    lsl r4, r3
+    bic r2, r4
+    mov r4, #0b011
+    lsl r4, r3
+    orr r2, r4
+
+    str r2, [r8, r1]
+
+    bx lr
+
 @ -----------------------------------------------------------------------
 @                           UART CONFIGURATION
 @ -----------------------------------------------------------------------

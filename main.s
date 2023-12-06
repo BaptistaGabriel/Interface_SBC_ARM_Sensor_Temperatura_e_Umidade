@@ -24,6 +24,20 @@ exit:
     t15ms: .word 15000000
     t150us: .word 150000
 
+    @ ///////////////////////////////////////////////////////////
+    @ //                Pinos referentes à UART                //
+    @ ///////////////////////////////////////////////////////////
+    PA13: @ UART3_TX
+        .word 0x4
+        .word 0x14
+        .word 0x10
+        .word 0xD
+
+    PA14: @ UART3_RX
+        .word 0x4
+        .word 0x18
+        .word 0x10
+        .word 0xE
 
     @ ///////////////////////////////////////////////////////////
     @ // Pinos referentes aos LEDS azul e vermelho da orangepi //
