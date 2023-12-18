@@ -7,7 +7,7 @@
 
 Professor: Thiago Cerqueira de Jesus
 
-Dupla: Gabriel Costa Baptista, Márcio Roberto e Kauan Caio de Arruda Farias
+Grupo: Gabriel Costa Baptista, Márcio Roberto e Kauan Caio de Arruda Farias
 
 * * *
 
@@ -32,12 +32,8 @@ Propriedades do projeto:
 ...
 Além de:
 ...
-4) Deslocar cursor do display para a direita
-5) Ligar display, ativar cursor e fazê-lo piscar
-6) Desligar display
-7) Return Home
+4) continuar descrevendo operações
 ...
-
 
 * * *
 <a id="hardware_utilizado"></a>
