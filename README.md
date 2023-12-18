@@ -26,16 +26,18 @@ Descrição do problema e solução.
 Propriedades do projeto:
   - Escrever Propriedades
 
-{...} permite no mínimo as seguinte operações: ```
+{...} permite no mínimo as seguinte operações:
+...
 1) Escrever operações
-```
+...
 Além de:
-```
+...
 4) Deslocar cursor do display para a direita
 5) Ligar display, ativar cursor e fazê-lo piscar
 6) Desligar display
 7) Return Home
-```
+...
+
 
 * * *
 <a id="hardware_utilizado"></a>
@@ -65,5 +67,6 @@ enviar dados e comandos ao display LCD 16x2 e interagir com os botões push, tod
 
 <img src="./src/pinagemOrange.png" alt="isolated" width="500"/>
 <!-- ![Disposição dos pinos Orange PI PC Plus](./src/pinagemOrange.png) -->
+
 
 #### [Voltar ao topo](#top)
