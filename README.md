@@ -7,7 +7,10 @@
 
 Professor: Thiago Cerqueira de Jesus
 
-Grupo: Gabriel Costa Baptista, Márcio Roberto e Kauan Caio de Arruda Farias
+## Componentes da equipe: 
+- Gabriel Costa Baptista [BaptistaGabriel](https://github.com/BaptistaGabriel)
+- Márcio Roberto Fernandes dos Santos Lima [MarcioDzn](https://github.com/MarcioDzn)
+- Kauan Caio de Arruda Farias [kakafariaZ](https://github.com/kakafariaZ)
 
 * * *
 
