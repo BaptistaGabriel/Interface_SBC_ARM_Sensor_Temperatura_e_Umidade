@@ -5,7 +5,7 @@
 
 ## Sensor de Temperatura e Umidade- TEC499 - MI Sistemas Digitais
 
-Professor: Thiago Cerqueira de Jesus
+Professor: Anfranserai 
 
 ## Componentes da equipe: 
 - Gabriel Costa Baptista [BaptistaGabriel](https://github.com/BaptistaGabriel)
