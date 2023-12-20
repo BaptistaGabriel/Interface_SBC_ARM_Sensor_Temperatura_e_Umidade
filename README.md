@@ -20,6 +20,13 @@ Professor: Anfranserai Morais Dias
 
 &nbsp;&nbsp;&nbsp;[**2.** Hardware Utilizado](#hardware_utilizado)
 
+&nbsp;&nbsp;&nbsp;[**3.** Software Utilizado](#software_utilizado)
+
+&nbsp;&nbsp;&nbsp;[**4.** Arquitetura do Computador](#arquitetura_computador)
+
+&nbsp;&nbsp;&nbsp;[**5.** Instruções Implementadas](#instruções_implementadas)
+
+&nbsp;&nbsp;&nbsp;[**6.** Instalação, Configuração de Ambiente e Execução](#instalacao_execucao)
 
 <a id="introducao"></a>
 ## Introdução
@@ -61,5 +68,9 @@ A disposição dos pinos no computador segue a configuração representada na fi
 <img src="http://www.orangepi.org/img/computersAndMmicrocontrollers/Pc-Plus/Rectangle%20741.png" alt="Texto Alternativo" width="400" height="316,333">
 <!-- ![Disposição dos pinos Orange PI PC Plus](http://www.orangepi.org/img/computersAndMmicrocontrollers/Pc-Plus/Rectangle%20741.png) -->
 
+<a id="software_utilizado"></a>
+## Software Utilizado:
+### Virtual Studio Code
+Optamos pelo uso do Visual Studio Code como nossa principal ferramenta de desenvolvimento para abordar a solução do problema. Através deste editor de código fonte, conduzimos testes e, no próprio ambiente do software, empregamos o terminal para estabelecer conexão via SSH com a Orange Pi.
 
 #### [Voltar ao topo](#top)
