@@ -32,7 +32,7 @@ Professor: Anfranserai Morais Dias
 ## Introdução
 
 
-Neste projeto avançado da disciplina TEC 499 - Sistemas Digitais, mergulhamos na intricada tarefa de desenvolver uma Interface Homem-Máquina (IHM) utilizando um diplay LCD 16x2. O foco central recai sobre a programação em Assembly ARM-v7 para a Interface Single-Board Computer (SBC) Orange PI PC PLUS, a qual é enriquecida pela integração de uma comunicação serial UART com um Sensor UHT-11 de temperatura e umidade. Esta iniciativa não apenas desafia nossa compreensão das complexidades da arquitetura ARM, mas também destaca a importância da interação precisa entre hardware e software para criar uma IHM eficiente e responsiva. Ao unir elementos cruciais e a comunicação serial com sensores, elevando nossas habilidades na criação de sistemas digitais avançados.
+Neste projeto avançado da disciplina TEC 499 - Sistemas Digitais, foi preciso desenvolver uma Interface Homem-Máquina (IHM) utilizando um diplay LCD 16x2. O foco central recai sobre a programação em Assembly ARM-v7 para a Interface Single-Board Computer (SBC) Orange PI PC PLUS, a qual é enriquecida pela integração de uma comunicação serial UART com um Sensor UHT-11 de temperatura e umidade. Esta iniciativa não apenas desafia a compreensão das complexidades da arquitetura ARM, mas também destaca a importância da interação precisa entre hardware e software para criar uma IHM eficiente e responsiva. Ao unir elementos cruciais e a comunicação serial com sensores, elevando as habilidades na criação de sistemas digitais avançados.
 
 Propriedades do projeto:
   - Menu no display LCD:
@@ -46,9 +46,11 @@ Propriedades do projeto:
 <a id="hardware_utilizado"></a>
 ## Hardware Utilizado:
 O hardware empregado na síntese e testes deste projeto é uma Orange PI PC Plus, que conta com 40 pinos GPIO e é alimentada por um processador H3 Quad-core Cortex-A7 H.265/HEVC 4K, baseado na arquitetura ARM V7. O sistema operacional utilizado é o Raspbian, com um kernel proprietário, destacando-se na versão 5.15.74-sunxi. Essa configuração robusta proporciona um ambiente sólido e eficiente para o desenvolvimento e implementação da Interface Single-Board Computer (SBC) em Assembly ARM-v7, a qual integra um LCD 16x2 e estabelece comunicação serial UART com um Sensor UHT-11 de temperatura e umidade.
-## [Orange Pi PC Plus]
+
+### [Orange Pi PC Plus]
 <img src="http://www.orangepi.org/img/img4/banner-PC-PLUS.jpg" alt="Texto Alternativo" width="400" height="295,2">
 <!-- ![Orange PI PC Plus](http://www.orangepi.org/img/img4/banner-PC-PLUS.jpg) -->
+
 ### Especificações - Orange PI PC Plus:
 
 | CPU | H3 Quad-core Cortex-A7 H.265/HEVC 4K   |
@@ -71,6 +73,6 @@ A disposição dos pinos no computador segue a configuração representada na fi
 <a id="software_utilizado"></a>
 ## Software Utilizado:
 ### Virtual Studio Code
-Optamos pelo uso do Visual Studio Code como nossa principal ferramenta de desenvolvimento para abordar a solução do problema. Através deste editor de código fonte, conduzimos testes e, no próprio ambiente do software, empregamos o terminal para estabelecer conexão via SSH com a Orange Pi.
+Foi optado pelo uso do Visual Studio Code como nossa principal ferramenta de desenvolvimento para abordar a solução do problema. Através deste editor de código fonte, conduzimos testes e, no próprio ambiente do software, empregamos o terminal para estabelecer conexão via SSH com a Orange Pi.
 
 #### [Voltar ao topo](#top)
