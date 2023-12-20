@@ -5,7 +5,7 @@
 
 ## Sensor de Temperatura e Umidade- TEC499 - MI Sistemas Digitais
 
-Professor: Thiago Cerqueira de Jesus
+Professor: Anfranserai Morais Dias
 
 ## Componentes da equipe: 
 - Gabriel Costa Baptista [BaptistaGabriel](https://github.com/BaptistaGabriel)
@@ -24,31 +24,25 @@ Professor: Thiago Cerqueira de Jesus
 <a id="introducao"></a>
 ## Introdução
 
-Descrição do problema e solução.
+
+Neste projeto avançado da disciplina TEC 499 - Sistemas Digitais, mergulhamos na intricada tarefa de desenvolver uma Interface Homem-Máquina (IHM) utilizando um diplay LCD 16x2. O foco central recai sobre a programação em Assembly ARM-v7 para a Interface Single-Board Computer (SBC) Orange PI PC PLUS, a qual é enriquecida pela integração de uma comunicação serial UART com um Sensor UHT-11 de temperatura e umidade. Esta iniciativa não apenas desafia nossa compreensão das complexidades da arquitetura ARM, mas também destaca a importância da interação precisa entre hardware e software para criar uma IHM eficiente e responsiva. Ao unir elementos cruciais e a comunicação serial com sensores, elevando nossas habilidades na criação de sistemas digitais avançados.
 
 Propriedades do projeto:
-  - Escrever Propriedades
-
-{...} permite no mínimo as seguinte operações:
-...
-1) Escrever operações
-...
-Além de:
-...
-4) continuar descrevendo operações
-...
+  - Menu no display LCD:
+  - Solicitação do requerimento:
+    - Umidade atual
+    - Temperatura atual
+    - Monitoramento da umidade atual
+    - Monitoramento da temperatura atual
 
 * * *
 <a id="hardware_utilizado"></a>
 ## Hardware Utilizado:
-O hardware utilizado para a síntese e testes deste projeto é uma Orange PI PC Plus, com 40 pinos GPIO e um processador H3 Quad-core Cortex-A7 H.265/HEVC 4K com arquitetura ARM V7, rodando o sistema operacional Raspbian com Kernel proprietário e em sua versão 5.15.74-sunxi.
-## [Orange Pi PC Plus](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-PC-Plus.html)
-
+O hardware empregado na síntese e testes deste projeto é uma Orange PI PC Plus, que conta com 40 pinos GPIO e é alimentada por um processador H3 Quad-core Cortex-A7 H.265/HEVC 4K, baseado na arquitetura ARM V7. O sistema operacional utilizado é o Raspbian, com um kernel proprietário, destacando-se na versão 5.15.74-sunxi. Essa configuração robusta proporciona um ambiente sólido e eficiente para o desenvolvimento e implementação da Interface Single-Board Computer (SBC) em Assembly ARM-v7, a qual integra um LCD 16x2 e estabelece comunicação serial UART com um Sensor UHT-11 de temperatura e umidade.
+## [Orange Pi PC Plus]
+<img src="http://www.orangepi.org/img/img4/banner-PC-PLUS.jpg" alt="Texto Alternativo" width="400" height="295,2">
+<!-- ![Orange PI PC Plus](http://www.orangepi.org/img/img4/banner-PC-PLUS.jpg) -->
 ### Especificações - Orange PI PC Plus:
-
-<img src="./src/OrangePI.png" alt="isolated" width="400"/>
-<!-- ![Orange PI PC Plus](./src/OrangePI.png) -->
-
 
 | CPU | H3 Quad-core Cortex-A7 H.265/HEVC 4K   |
 |:--- |                                   ---: |
@@ -61,11 +55,11 @@ O hardware utilizado para a síntese e testes deste projeto é uma Orange PI PC 
 | Periféricos de baixo nível | 40 pinos        |
 
 ### Pinout Orange PI PC Plus:
-Por meio dos pinos de entrada e saída de propósito geral foi possível prosseguir com a solução e
-enviar dados e comandos ao display LCD 16x2 e interagir com os botões push, todos os pinos do computador estão dispostos conforme a figura abaixo:
+A solução foi viabilizada através dos pinos de entrada e saída de propósito geral, permitindo a transmissão de dados e comandos para o display LCD 16x2 e a interação com os botões push. 
+A disposição dos pinos no computador segue a configuração representada na figura abaixo:
 
-<img src="./src/pinagemOrange.png" alt="isolated" width="500"/>
-<!-- ![Disposição dos pinos Orange PI PC Plus](./src/pinagemOrange.png) -->
+<img src="http://www.orangepi.org/img/computersAndMmicrocontrollers/Pc-Plus/Rectangle%20741.png" alt="Texto Alternativo" width="400" height="316,333">
+<!-- ![Disposição dos pinos Orange PI PC Plus](http://www.orangepi.org/img/computersAndMmicrocontrollers/Pc-Plus/Rectangle%20741.png) -->
 
 
 #### [Voltar ao topo](#top)
