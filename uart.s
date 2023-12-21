@@ -7,13 +7,13 @@
 .equ PLL_CLK_SEL, 0x6C
 .equ PLL_CLK_SEL_OFFSET, 0x13
 
-.equ PLL_PLL_SELECT, 0x58
-.equ PLL_PLL_SELECT_OFFSET, 0x18
+.equ PLL_APB2, 0x58
+.equ PLL_APB2_OFFSET, 0x18
 
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+@ //                                 Mapeia a memória do CCU                                 //
+@ /////////////////////////////////////////////////////////////////////////////////////////////
 mapMemoryCCU:
-    sub sp, sp, #4
-    str lr, [sp]
-
     ldr r0, =devMem
     mov r1, #2
     mov r7, #5
@@ -30,52 +30,61 @@ mapMemoryCCU:
     mov r7, #192 @sysmmap2
     svc 0
 
-    mov r9, r0 
-
-    ldr lr, [sp]
-    add sp, sp, #4
+    mov r10, r0 
 
     bx lr
 
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+@ //                   Configurações dos registradores referentes ao clock                   //
+@ /////////////////////////////////////////////////////////////////////////////////////////////
 configClock:
     sub sp, sp, #4
     str lr, [sp]
 
     bl mapMemoryCCU
 
-    @ setando a saída do pll_periph0 pra 24MHZ
-    ldr r0, [r9, #PLL_ENABLE]
+    @ setando a saída do pll_periph0 pra 624MHz
+    ldr r0, [r10, #PLL_ENABLE]
     mov r1, #1
     lsl r1, #PLL_ENABLE_OFFSET @31
     orr r0, r1
-    str r0, [r9, #PLL_ENABLE]
+    str r0, [r10, #PLL_ENABLE]
 
     @ setando o src do APB2 como pll_periph0
-    ldr r0, [r9, #PLL_PLL_SELECT]
+    ldr r0, [r10, #PLL_APB2]
     mov r1, #0b11
-    lsl r1, #PLL_PLL_SELECT_OFFSET @24
+    lsl r1, #PLL_APB2_OFFSET @24
     orr r0, r1
-    str r0, [r9, #PLL_PLL_SELECT]
+    str r0, [r10, #PLL_APB2]
 
     @ direcionando o clock pra a uart
-    ldr r0, [r9, #PLL_CLK_SEL]
+    ldr r0, [r10, #PLL_CLK_SEL]
     mov r1, #1
     lsl r1, #PLL_CLK_SEL_OFFSET @19
     orr r0, r1
-    str r0, [r9, #PLL_CLK_SEL]
+    str r0, [r10, #PLL_CLK_SEL]
+
+    @ ligando o rst da uart
+    ldr r0, [r10, #UART3_RST]
+    mov r1, #1
+    lsl r1, #UART3_RST_OFFSET @19
+    bic r0, r1
+    str r0, [r10, #UART3_RST]
 
     @ desligando o rst da uart
-    ldr r0, [r9, #UART3_RST]
+    ldr r0, [r10, #UART3_RST]
     mov r1, #1
     lsl r1, #UART3_RST_OFFSET @19
     orr r0, r1
-    str r0, [r9, #UART3_RST]
-
+    str r0, [r10, #UART3_RST]
     ldr lr, [sp]
-    add sp, sp, #4
 
+    add sp, sp, #4
     bx lr
 
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+@ //                                 Mapeia a memória da UART                                //
+@ /////////////////////////////////////////////////////////////////////////////////////////////
 mapMemoryUART:
     sub sp, sp, #4
     str lr, [sp]
@@ -98,14 +107,17 @@ mapMemoryUART:
     mov r7, #192 @sysmmap2
     svc 0
 
-    mov r9, r0
-    add r9, #0xC00 
+    mov r10, r0
+    add r10, #0xC00 
 
     ldr lr, [sp]
     add sp, sp, #4
 
     bx lr
 
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+@ //                  Seta um pino específico pra o modo UART (TX ou RX)                     //
+@ /////////////////////////////////////////////////////////////////////////////////////////////
 setPinToUART:
     @ r0 - pino
     @ deve ser usado no PA13 e no PA14
@@ -125,18 +137,17 @@ setPinToUART:
 
     bx lr
 
-@ -----------------------------------------------------------------------
-@                           UART CONFIGURATION
-@ -----------------------------------------------------------------------
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+@ //            Configuração da UART (baud rate, enables, qtd de bits, FIFOS)                //
+@ /////////////////////////////////////////////////////////////////////////////////////////////
 
 configUART: 
     sub sp, sp, #4
     str lr, [sp]
 
-    @ remove o bit de paridade
-
     @ seta a quantidade de bits pra 8 (DLS)
-    ldr r1, [r9, #0xC]
+    ldr r1, [r10, #0xC]
+
     mov r2, #0b11
     orr r1, r2
 
@@ -144,49 +155,68 @@ configUART:
     mov r2, #1
     lsl r2, #7
     orr r1, r2
-    str r1, [r9, #0xC]
+    str r1, [r10, #0xC]
 
-    @ setando o baud rate (24MHz - 4069) no DLH e DLL
+    @ 1/ 9600 por byte
+    @ setando o divisor (4069) no DLH e DLL
     @ DLH
-    ldr r1, [r9, #4]
+    ldr r1, [r10, #4]
     mov r2, #0b11111111
     bic r1, r2
     mov r2, #0b00001111
     orr r1, r2
-    str r1, [r9, #4]
+    str r1, [r10, #4]
 
     @DLL
-    ldr r1, [r9]
+    ldr r1, [r10]
     mov r2, #0b11111111
     bic r1, r2
     mov r2, #0b11100101
     orr r1, r2
-    str r1, [r9]
+    str r1, [r10]
 
     @ desativa o DLL/volta pra RBR
-    ldr r1, [r9, #0xC]
+    ldr r1, [r10, #0xC]
     mov r2, #1
     lsl r2, #7
     bic r1, r2
-    str r1, [r9, #0xC]
+    str r1, [r10, #0xC]
 
     @ habilitando o FIFO
-    ldr r1, [r9, #0x4]
+    ldr r1, [r10, #0x8]
     mov r2, #1
+    bic r1, r2
     orr r1, r2
-    str r1, [r9, #0x4]
+    str r1, [r10, #0x8]
 
     ldr lr, [sp]
     add sp, sp, #4
 
     bx lr
 
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+@ //                                        Envia os dados                                   //
+@ /////////////////////////////////////////////////////////////////////////////////////////////
 sendUART:
-    @ r0 - valor a ser enviado (8 bits)
-    str r0, [r9, #0]
+    @ ro - valor a ser enviado
+    str r0, [r10, #0]
     bx lr
+    
 
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+@ //                                       Recebe os dados                                   //
+@ /////////////////////////////////////////////////////////////////////////////////////////////
 receiveUART:
-    @ r1 - valor a ser recebido
-    ldr r1, [r9, #0]
+    @ verifica se o FIFO não está vazio
+    @ enquanto estiver, permanece em loop
+    ldr r1, [r10, #0x7C]
+    mov r2, #1
+    lsr r1, #3
+    and r1, r2
+
+    cmp r1, #0
+    beq receiveUART
+
+    ldr r1, [r10, #0]
+
     bx lr

@@ -1,7 +1,10 @@
 @ /////////////////////////////////////////////////////////////////////////////////////////////
-@ //                              Mapeia a memória da orangepi                               //
+@ //                                    Mapeia a memória                                     //
 @ /////////////////////////////////////////////////////////////////////////////////////////////
-mapMemory:
+
+@ Coloca o endereço base referente aos registradores da GPIO em r8 (esse registrador não pode ser mexido)
+.macro MemoryMap
+    @sys_open
     ldr r0, =devMem
     mov r1, #2
     mov r7, #5
@@ -19,88 +22,13 @@ mapMemory:
     svc 0
     mov r8, r0
     add r8, #0x800 @ offset pra pegar o endereço base da GPIO 0x1C20800
-
-    bx lr
-
+.endm
 
 @ /////////////////////////////////////////////////////////////////////////////////////////////
-@ //                           Seta a direção do pino pra entrada                            //
+@ //                           Seta um pino pra nível baixo (0)                              //
 @ /////////////////////////////////////////////////////////////////////////////////////////////
-pinInput:
-    @ r0 deve receber o endereço base dos offsets dos pinos
-    @ exemplo: ldr r0, =pg7
-
-    ldr r1, [r0] @ carrega o offset do registrador de configuração do pino
-    ldr r3, [r0, #4] @ carrega o offset >> no << registrador de configuração do pino
-    ldr r2, [r8, r1] @ carrega o registrador de configuração do pino
-    
-    @ criando a máscara e substituindo o registrador de dados
-    @ |000|000 -> 000|000| e depois substitui isso no r2 (registrador de config)
-    mov r0, #0xb111
-    lsl r0, r3
-    bic r2, r0
-
-    @ guardando novamente na memória
-    str r2, [r8, r1]
-    bx lr
-
-
-@ /////////////////////////////////////////////////////////////////////////////////////////////
-@ //                            Seta a direção do pino pra saída                             //
-@ /////////////////////////////////////////////////////////////////////////////////////////////
-pinOutput:
-    @ r0 deve receber o endereço base dos offsets dos pinos
-    @ exemplo: ldr r0, =pg7
-
-    ldr r1, [r0, #0] @ carrega o offset do registrador de configuração do pino
-    ldr r3, [r0, #4] @ carrega o offset >> no << registrador de configuração do pino
-    ldr r2, [r8, r1] @ carrega o registrador de configuração do pino
-    
-    @ criando a máscara e substituindo o registrador de dados
-    @ |001|000 -> 000|001| e depois substitui isso no r2 (registrador de config)
-
-    mov r0, #0xb111
-    lsl r0, r3
-    bic r2, r0
-    mov r0, #1
-    lsl r0, r3
-    orr r2, r0
-
-    @ guardando novamente na memória
-    str r2, [r8, r1]
-    
-    bx lr
-
-
-@ /////////////////////////////////////////////////////////////////////////////////////////////
-@ //                           Seta o estado do pino pra alto (1)                            //
-@ /////////////////////////////////////////////////////////////////////////////////////////////
-setPinHigh:
-    @ r0 deve receber o endereço base dos offsets dos pinos
-    @ exemplo: ldr r0, =pg7
-
-    ldr r1, [r0, #8] @ carrega o offset do registrador de dados do pino
-    ldr r3, [r0, #12] @ carrega o offset >> no << registrador de dados do pino
-    ldr r2, [r8, r1] @ carrega o registrador de dados do pino
-    
-    @ criando a máscara e substituindo o registrador de dados
-    @ |1|000 -> 000|1| e depois substitui isso no r2 (registrador de dados)
-    mov r0, #1
-    lsl r0, r3
-    orr r2, r2, r0
-
-    @ guardando novamente na memória
-    str r2, [r8, r1]
-
-    bx lr
-
-
-@ /////////////////////////////////////////////////////////////////////////////////////////////
-@ //                          Seta o estado do pino pra baixo (0)                            //
-@ /////////////////////////////////////////////////////////////////////////////////////////////
-setPinLow:
-    @ r0 deve receber o endereço base dos offsets dos pinos
-    @ exemplo: ldr r0, =pg7
+.macro setPinLow pin
+    ldr r0, =\pin
 
     ldr r1, [r0, #8] @ carrega o offset do registrador de dados do pino
     ldr r3, [r0, #12] @ carrega o offset >> no << registrador de dados do pino
@@ -114,42 +42,78 @@ setPinLow:
 
     @ guardando novamente na memória
     str r2, [r8, r1]
-
-    bx lr
-
+.endm
 
 @ /////////////////////////////////////////////////////////////////////////////////////////////
-@ //                        Seta o estado do pino pra baixo ou alto                          //
+@ //                           Seta um pino pra nível alto (1)                               //
 @ /////////////////////////////////////////////////////////////////////////////////////////////
-setPinState:
-    @ r0 deve receber o pino
-    @ r1 deve receber 0 ou 1
+.macro setPinHigh pin
+    ldr r0, =\pin
 
-    sub sp, sp, #4
-    str lr, [sp]
+    ldr r1, [r0, #8] @ carrega o offset do registrador de dados do pino
+    ldr r3, [r0, #12] @ carrega o offset >> no << registrador de dados do pino
+    ldr r2, [r8, r1] @ carrega o registrador de dados do pino
     
-    cmp r1, #1
-    beq setHigh
-    bl setPinLow
-    b endAction
+    @ criando a máscara e substituindo o registrador de dados
+    @ |1|000 -> 000|1| e depois substitui isso no r2 (registrador de dados)
+    mov r0, #1
+    lsl r0, r3
+    orr r2, r2, r0
 
-    setHigh:
-        bl setPinHigh
-
-    endAction:
-        ldr lr, [sp]
-        add sp, sp, #4
-
-    bx lr
-
+    @ guardando novamente na memória
+    str r2, [r8, r1]
+.endm 
 
 @ /////////////////////////////////////////////////////////////////////////////////////////////
-@ //                             Pega o estado do pino (0 ou 1)                              //
+@ //                                  Seta um pino pra saída                                 //
 @ /////////////////////////////////////////////////////////////////////////////////////////////
-getPinState:
-    @ r0 deve receber o endereço base dos offsets dos pinos
-    @ exemplo: ldr r0, =pg7
+.macro setPinOut pin
+    ldr r0, =\pin
 
+    ldr r1, [r0, #0] @ carrega o offset do registrador de configuração do pino
+    ldr r3, [r0, #4] @ carrega o offset >> no << registrador de configuração do pino
+    ldr r2, [r8, r1] @ carrega o registrador de configuração do pino
+    
+    @ criando a máscara e substituindo o registrador de dados
+    @ |001|000 -> 000|001| e depois substitui isso no r2 (registrador de config)
+
+    mov r0, #0b111
+    lsl r0, r3
+    bic r2, r0
+    mov r0, #1
+    lsl r0, r3
+    orr r2, r0
+
+    @ guardando novamente na memória
+    str r2, [r8, r1]
+.endm
+
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+@ //                                  Seta um pino pra entrada                               //
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+.macro setPinIn pin
+    ldr r0, =\pin 
+
+    ldr r1, [r0] @ carrega o offset do registrador de configuração do pino
+    ldr r3, [r0, #4] @ carrega o offset >> no << registrador de configuração do pino
+    ldr r2, [r8, r1] @ carrega o registrador de configuração do pino
+    
+    @ criando a máscara e substituindo o registrador de dados
+    @ |000|000 -> 000|000| e depois substitui isso no r2 (registrador de config)
+    mov r0, #0b111
+    lsl r0, r3
+    bic r2, r0
+
+    @ guardando novamente na memória
+    str r2, [r8, r1]
+.endm
+
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+@ //                           Pega o estado de um pino (0 ou 1)                             //
+@ /////////////////////////////////////////////////////////////////////////////////////////////
+.macro getPinState pin
+    ldr r0, =\pin
+    
     ldr r1, [r0, #8] @ carrega o offset do registrador de dados do pino
     ldr r3, [r0, #12] @ carrega o offset >> no << registrador de dados do pino
     ldr r2, [r8, r1] @ carrega o registrador de dados do pino
@@ -159,9 +123,7 @@ getPinState:
     mov r0, #1
     lsr r2, r3
     and r1, r2, r0
-
-    bx lr
-
+.endm
 
 @ /////////////////////////////////////////////////////////////////////////////////////////////
 @ //          Verifica se um bit é 0 ou 1 e adiciona esse estado a d7, d6, d5 ou d4          //
@@ -169,14 +131,14 @@ getPinState:
 setCondPinState:
     @ pegando o estado do pino
     mov r4, #1
-    mov r3, r9
-    lsr r3, r2 @ move o bit (na posição em r2) pra o LSB
-    and r1, r4, r3 @ atribui 0 ou 1 para r1 (a depender do estado do bit)
+    lsl r4, r4, r2
+    and r4, r4, r9
+    lsr r1, r4, r2 @ move o bit (na posição em r2) pra o LSB
 
     @ pegando o registrador de dados
     ldr r3, [r5, #8]
     ldr r2, [r5, #12]
-    ldr r6, [r8, r2] @ coloca o registrador de dados em r6
+    ldr r6, [r8, r3] @ coloca o registrador de dados em r6
 
     @ cria máscara ...0000|1| -> ...00|1|00 (r2 vezes)
     mov r4, #1
@@ -195,4 +157,3 @@ setCondPinState:
         bic r6, r4
         str r6, [r8, r3]
         bx lr
-    
