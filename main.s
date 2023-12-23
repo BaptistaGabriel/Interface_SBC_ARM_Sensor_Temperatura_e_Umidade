@@ -315,6 +315,7 @@ _start:
 
 	@ Página referente ao valor da TEMPERATURA CONTÍNUA
 	page3b: 
+
         @ verifica se o sensor é válido
         mov r11, #0x00
         bl getResponse
@@ -350,24 +351,27 @@ _start:
 			cmp r10, #300 @ 2 segundos
 			beq tempCont
 			b waitPage3b
+            
 
 			tempCont:
+
 				clearDisplay
 
 				ldr r12, =cont_temp_value
                 mov r11, #13
 				bl showFirstLine
 				bl ReceiveDataUART
-				.ltorg
+
 
                 cmp r12, #31
                 beq selectedSensorContTempError
+
 
 				bl getDecimal
 				WriteCharNumber r11
 				bl getUnity
 				WriteCharNumber r11
-				.ltorg
+
                 ldr r12, =stop_cont
 				bl showSecondLine
 
@@ -375,7 +379,7 @@ _start:
 
 
 			b waitPage3b
-
+        .ltorg
 	@ ////////////////////////////////////////////////
 	@ // 	            Camada 3 (c)                //
 	@ ////////////////////////////////////////////////
