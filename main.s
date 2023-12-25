@@ -16,6 +16,9 @@ _start:
 	.ltorg
     twoLine 
 
+	@ ////////////////////////////////////////////////
+	@ // 	            Camada Zero                 //
+	@ ////////////////////////////////////////////////
     page00: 
 		resetCounter:
 			mov r12, #0
@@ -380,11 +383,10 @@ _start:
 
 			b waitPage3b
         .ltorg
-	@ ////////////////////////////////////////////////
-	@ // 	            Camada 3 (c)                //
-	@ ////////////////////////////////////////////////
+	@ /////////////////////////////////////////////////////////////////////////////
+	@ // 	            	Páginas referentes ao status do sensor               //
+	@ /////////////////////////////////////////////////////////////////////////////
 
-	@ Página intermediária que verifica qual o TIPO DE RETORNO DE STATUS DO SENSOR
 	page0c: 
         mov r11, #0x00
 		bl getResponse
@@ -606,6 +608,9 @@ _start:
 
 		b page0a
 
+@ ///////////////////////////////////////////////////////////////////////////////////////
+@ // 	                     Funções de debounce para os botões                        //
+@ ///////////////////////////////////////////////////////////////////////////////////////
 incrSensor:
 	nanoSleep t0s, t500ms
 	add r12, #1
@@ -620,6 +625,9 @@ incrSensor:
 	returnBx:
 		b showText
 
+@ ///////////////////////////////////////////////////////////////////////////////////////
+@ // 	             Funções referentes ao sensor/sensor inválido                      //
+@ ///////////////////////////////////////////////////////////////////////////////////////
 selectSensor:
 	ldr r1, =current_sensor
 	str r12, [r1]
@@ -690,10 +698,10 @@ selectedSensorContTempError:
 	current_sensor: .word 0x0F
 
     menu_req: .ascii "Voltar ao Menu\n" 
-    devMem: .asciz "/dev/mem" @ caminho do arquivo que representa a memoria RAM
-    gpioaddr: .word 0x1C20 @ endereco base GPIO / 4096
+    devMem: .asciz "/dev/mem" @ caminho do arquivo que dá acesso à memória física
+    gpioaddr: .word 0x1C20 @ endereco base da GPIO
     pagelen: .word 0x1000 @ tamanho da pagina
-	uartaddr: .word 0x1C28 @ endereço base UART
+	uartaddr: .word 0x1C28 @ endereço base da UART
 
 	t1ms: .word 1000000 @ 1ms
 	t1s: .word 1 @ 1ms
