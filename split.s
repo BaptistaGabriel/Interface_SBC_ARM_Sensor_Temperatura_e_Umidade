@@ -1,3 +1,7 @@
+
+@ ////////////////////////////////////////////////////////////////////////
+@ //                    Pega a dezena de um número                      //
+@ ////////////////////////////////////////////////////////////////////////
 getDecimal: @ divisão pra achar os digitos
     @ r12 - valor a ser dividido
     mov r9, #10
@@ -6,6 +10,9 @@ getDecimal: @ divisão pra achar os digitos
     bx lr
     
 
+@ ////////////////////////////////////////////////////////////////////////
+@ //                    Pega a unidade de um número                      //
+@ ////////////////////////////////////////////////////////////////////////
 getUnity: @ divisão pra achar os digitos
     @ r12 - valor a ser dividido
     mov r9, #10
