@@ -27,6 +27,7 @@
 9.  [Modulos do Projeto](#modulosDoProjeto)
 10.  [MakeFile](#makeFile)
 11.  [Conclusão](#conclusao)
+12.  [Referências](#referencias)
 
 ## 1. Sobre: <a id="sobre"></a>
 
@@ -321,6 +322,12 @@ Ao fim do desenvolvimento todos os requisitos foram cumpridos, e o sistema funci
 Nesse sentido, a integração dos elementos necessários formam um sistema funcional que exibe corretamente as informações solicitadas. Tais elementos são: a UART, para comunicação de dados, o GPIO para manipulação dos pinos de entrada e saída e o display LCD para exibição de dados para o usuário.
  
 Por fim, o projeto desenvolvido ajudou a compreender conceitos importantes relacionados à linguagem Assembly e a recursos de hardware que podem ser manipulados a partir da mesma, tal qual a OrangePi PC Plus.
+
+## 12. Referências: <a id="referencias"></a> 
+- Datasheet - Allwinner H3: https://drive.google.com/file/d/1AV0gV4J4V9BVFAox6bcfLu2wDwzlYGHt/view. Acesso em 27 dez. 2023
+- Datasheet - LCD HD44780U: https://www.sparkfun.com/datasheets/LCD/HD44780.pdf. Acesso em 27 dez. 2023
+- Smith S. (2019). Raspberry Pi Assembly Language Programming.
+- Repositório [TimerAssembly](https://github.com/AssemblyTimer/TimerAssembly) usado como referência.
 
 ## Feito por:
 
