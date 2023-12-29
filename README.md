@@ -70,7 +70,7 @@ A partir da linguagem Assembly é possível controlar o hardware do sistema, a p
 
 ### 2.2. Registradores <a id="registradores"></a>
 
-Cada módulo contém diversos registradores utilizados para fins variados, como configuração e transmissão de dados. Muitos pinos são manipulados através dos registradores, podendo ter seu estado ou modo de operação alterados.
+Cada módulo contém diversos registradores utilizados para fins variados, como configuração e transmissão de dados. Muitos pinos são manipulados através dos registradores, podendo ter seu estado ou modo de operação alterados. Tais registradores, em geral, contém 32 bits de dados armazenados.
 
 Os registradores são encontrados a partir da soma de um offset específico com um determinado endereço base, conforme especificado no datasheet Allwinner H3. Ademais, certos bits de um determinado registro se referem a tipos de configuração diferentes, sendo necessários offsets específicos para encontrar a posição desejada.
 
@@ -156,7 +156,7 @@ Nesse sentido, a partir do mapeamento de memória é possível ter acesso a dete
 
 
 ### 4.1 GPIO <a id="GPIO"></a>
-Para manipular certos pinos, como os referentes aos botões e as entradas de dados do display LCD, tornou-se necessário trabalhar com o módulo GPIO. Dessa forma, após realizar o mapeamento deste módulo, obteve-se acesso às suas portas.</br>
+Para manipular certos pinos, como os referentes aos botões e as entradas de dados do display LCD, tornou-se necessário trabalhar com o módulo GPIO (General Purpose Input/Output). Dessa forma, após realizar o mapeamento deste módulo, obteve-se acesso às suas portas.</br>
 
 As portas utilizadas durante a manipulação do GPIO são a A e a G, segundo o datasheet da OrangePI PC Plus. Cada tipo de porta contém alguns registradores de configuração, para configurar os pinos, além de um registrador de dados, referente ao estado atual de um pino.</br>
 
@@ -235,7 +235,12 @@ Alguns macros utilizados para a implementação dos conceitos supracitados foram
 
 Um requisito fundamental do projeto é a exibição de um menu amigável no LCD, o qual deve conter textos que se refiram tanto às opções disponíveis quanto aos dados obtidos do sensor. Para isso, utilizou-se o LCD HD44780U, que contém duas linhas e pode manifestar 16 caracteres em cada. 
 
-Para manipular o display é necessário enviar determinados valores a ele, que podem ser instruções ou dados a serem exibidos. Nesse sentido, alguns pinos são requisitados para realizar essa transmissão da maneira correta, como: RS, responsável por selecionar entre o registrador de instrução e o de dados; DB7 a DB4, usados para transferência de dados entre a MPU e o LCD; e E, que permite a leitura ou a escrita de dados.
+Para manipular o display é necessário enviar determinados valores a ele, que podem ser instruções ou dados a serem exibidos. Nesse sentido, alguns pinos são requisitados para realizar essa transmissão da maneira correta, como: 
+- `RS`: responsável por selecionar entre o registrador de instrução e o de dados; RS = 0 para envio de instruções e RS = 1 para envio de dados.
+- `DB7 a DB4`: usados para transferência de dados entre a MPU e o LCD.
+- `E`: habilita a leitura ou a escrita de dados.
+
+Os dados enviados podem ser armazenados podem ser amazenados em dois tipos de registradores, o IR (Instruction Register) ou DR (Data Register). As insformações transferidas ao DR são automaticamente enviados ao DDRAM, o buffer de dados do LCD, cujos endereços se referem a uma posição do display.
 
 Como a interface de dados é de 4 bits, apenas 4 pinos de transferência são usados, indo do DB7 ao DB4. Para a transferência de dados, os 4 bits de ordem mais alta (DB4 a DB7) são enviados antes dos 4 bits de ordem mais baixa, os quais seriam DB0 a DB3, para uma interface de 8 bits. Dessa forma, os pinos a serem utilizados para envio de informações são apenas D7 a D4, sendo D3, D2, D1 e D0 também referidos por D7, D6, D5 e D4, respectivamente.
 
@@ -261,6 +266,8 @@ Para realizar o envio de instruções, individualmente, é necessário transmiti
 ### 6.3 Escrita de Caractere <a id="escritaDeCaractere"></a>
 
 Outra ação importante é a escrita de dados na tela, a qual segue um princípio semelhante ao envio de instruções, com a transferência de dados a partir dos pinos DB7 a DB4. Entretanto, além de atribuir nível alto ao pino RS, para modo de envio de dados, configurações adicionais do LCD são necessárias.
+
+Os dados enviados devem corresponder a um ASCII (um byte) referente a um caractere específico.
 
 <div align='center'>
   
