@@ -24,7 +24,6 @@
        - 7.2. [Instruções](#instrucoes)
        - 7.3. [Escrita de Caractere](#escritaDeCaractere)
        - 7.4. [LCD - Funções e Macros](#LCDFuncoesEMacros)
-
 8.  [Testes](#testes)
 9.  [Modulos do Projeto](#modulosDoProjeto)
 10.  [MakeFile](#makeFile)
@@ -36,7 +35,11 @@
 
 ### 1.1 Objetivo:
 
-Desenvolver de uma interface para um sensor de temperatura e umidade, projetada para ser utilizada em Single Board Computers (SBC) baseados na arquitetura ARM. Esta interface visa possibilitar a leitura e controle eficientes dos dados de temperatura e umidade, oferecendo uma solução integrada para a obtenção dessas informações em placas ARM específicas.
+Desenvolver de uma interface para um sensor de temperatura e umidade, projetada para ser utilizada em Single Board Computers (SBC) baseados na arquitetura ARM. Esta interface visa possibilitar a leitura e controle eficientes dos dados de temperatura e umidade, oferecendo uma solução integrada para a obtenção dessas informações em placas ARM específicas.</br>
+Alguns requisitos devem ser cumpridos durante o desenvolvimento, como:
+- O código deve ser escrito em Assembly;
+- O sistema só poderá utilizar os componentes disponíveis no protótipo.
+
 
 ### 1.2 Materiais utilizados:
 
@@ -92,6 +95,8 @@ Por fim, existem as camadas intermediárias, responsáveis por indicar se alguma
 </div>
 
 A fim de controlar a mudança de telas no LCD utilizou-se botões específicos, tanto alterar as páginas de uma mesma camada quanto para selecionar uma opção e passar para uma outra camada. De maneira intuitiva, os botões da direita e da esquerda alteram entre opções e o do meio modifica a camada.
+
+Ao clicar na imagem abaixo será possível ver um vídeo no youtube que demonstra o funcionamento do protótipo real.
 <div align='center'>
   
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/FNPSqP4ep6A/0.jpg)](https://www.youtube.com/watch?v=FNPSqP4ep6A)
@@ -110,7 +115,7 @@ Cada módulo contém diversos registradores utilizados para fins variados, como 
 
 Os registradores são encontrados a partir da soma de um offset específico com um determinado endereço base, conforme especificado no datasheet Allwinner H3. Ademais, certos bits de um determinado registro se referem a tipos de configuração diferentes, sendo necessários offsets específicos para encontrar a posição desejada.
 
-Com base nisso, a manipulação, de maneira geral, dos módulos utilizados no projeto, com exceção do LCD, se dá a partir da modificação de determinados bits em registradores específicos. Tal modificação se dá através de máscaras de bits, as quais permitem a alteração de parte dos dados sem comprometer os demais.
+Com base nisso, a manipulação, de maneira geral, dos módulos utilizados no projeto, com exceção do LCD, se dá a partir da modificação de determinados bits em registradores específicos. Tal modificação ocorre através de máscaras de bits, as quais permitem a alteração de parte dos dados sem comprometer os demais.
 
 ### 4.2 CCU: <a id="ccu"></a>
 
@@ -119,21 +124,25 @@ A Unidade de Controle de Relógio (CCU) permite a manipulação da geração, di
 A partir da manipulação dos registradores da CCU, tornou-se possível obter o correto funcionamento da UART como meio de comunicação de dados.
 
 ## 5. Mapeamento de Memória e GPIO: <a id="mapeamentoDeMemoriaEGPIO"></a>
-Para manipular os componentes importantes da OrangePI PC Plus necessários ao projeto, como os pinos e a UART, é necessário realizar o mapeamento de memória dos seus respectivos módulos. Cada módulo tem um endereço base, sendo dividido em páginas de tamanho determinado. Tanto para o GPIO, quanto para a UART e o CCU, cada página tem o tamanho de 1k.</br></br>
+Para manipular os componentes importantes da OrangePI PC Plus necessários ao projeto, como os pinos e a UART, é necessário realizar o mapeamento de memória dos seus respectivos módulos. Cada módulo tem um endereço base, sendo dividido em páginas de tamanho determinado. Tanto para o GPIO, quanto para a UART e o CCU, cada página tem o tamanho de 1k.</br>
 Os endereços base utilizados foram:
 
 - UART: 0x1C20000
 - GPIO: 0x1C20800
 - CCU: 0x1C2800</br>
   
-O primeiro passo para realizar o mapeamento é ter acesso a um arquivo que dá acesso à memória física da OrangePi PC Plus, o ‘/dev/mem’. Para abrir esse arquivo é preciso utilizar a chamada de sistema ‘open’, que retorna um descritor de arquivo, o qual poderá ser usado para acessá-lo.</br>
-Utilizando arquivo supracitado e outros argumentos como o endereço base e tamanho da página é possível realizar o mapeamento em si, por meio da chamada de sistema ‘mmap2’. O seu retorno é o endereço virtual mapeado, o endereço base, que poderá ser utilizado como base para encontrar determinados registradores.</br>
+O primeiro passo para realizar o mapeamento é ter acesso a um arquivo que dá acesso à memória física da OrangePi PC Plus, o `/dev/mem`. Para abrir esse arquivo é preciso utilizar a chamada de sistema `open`, que retorna um descritor de arquivo, o qual poderá ser usado para acessá-lo.</br>
+
+Utilizando arquivo supracitado e outros argumentos como o endereço base e tamanho da página é possível realizar o mapeamento em si, por meio da chamada de sistema `mmap2`. O seu retorno é o endereço virtual mapeado, o endereço base, que poderá ser utilizado como base para encontrar determinados registradores.</br>
+
 Nesse sentido, a partir do mapeamento de memória é possível ter acesso a determinadas portas, que permitem a manipulação e configuração de certos pinos e funcionalidades.
 
 
 ### 5.1 GPIO <a id="GPIO"></a>
 Para manipular certos pinos, como os referentes aos botões e as entradas de dados do display LCD, tornou-se necessário trabalhar com o módulo GPIO. Dessa forma, após realizar o mapeamento deste módulo, obteve-se acesso às suas portas.</br>
+
 As portas utilizadas durante a manipulação do GPIO são a A e a G, segundo o datasheet da OrangePI PC Plus. Cada tipo de porta contém alguns registradores de configuração, para configurar os pinos, além de um registrador de dados, referente ao estado atual de um pino.</br>
+
 Cada registrador está em algum local da memória, e para encontrá-lo é necessário utilizar um offset específico associado a ele. A partir da soma desse offset com o endereço base encontra-se o registro buscado. Dentro de cada registrador há diversos conjuntos de bits, sendo que, cada um deles, no caso da GPIO, está associado a um determinado pino específico.
 
 ### 5.2 Manipulação de um pino <a id="manipulacaoDeUmPino"></a>
