@@ -248,7 +248,7 @@ Para manipular o display é necessário enviar determinados valores a ele, que p
 - `DB7 a DB4`: usados para transferência de dados entre a MPU e o LCD.
 - `E`: habilita a leitura ou a escrita de dados.
 
-Os dados enviados podem ser armazenados podem ser amazenados em dois tipos de registradores, o IR (Instruction Register) ou DR (Data Register). As insformações transferidas ao DR são automaticamente enviados ao DDRAM, o buffer de dados do LCD, cujos endereços se referem a uma posição do display.
+Os dados enviados podem ser amazenados em dois tipos de registradores, o IR (Instruction Register) ou DR (Data Register). As insformações transferidas ao DR são automaticamente enviados ao DDRAM, o buffer de dados do LCD, cujos endereços se referem a uma posição do display.
 
 Como a interface de dados é de 4 bits, apenas 4 pinos de transferência são usados, indo do DB7 ao DB4. Para a transferência de dados, os 4 bits de ordem mais alta (DB4 a DB7) são enviados antes dos 4 bits de ordem mais baixa, os quais seriam DB0 a DB3, para uma interface de 8 bits. Dessa forma, os pinos a serem utilizados para envio de informações são apenas D7 a D4, sendo D3, D2, D1 e D0 também referidos por D7, D6, D5 e D4, respectivamente.
 
