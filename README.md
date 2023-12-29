@@ -31,6 +31,14 @@
 11.  [Como Executar](#comoExecutar)
 12.  [Referências](#referencias)
 
+## Equipe
+
+Gabriel Baptista: [@BaptistaGabriel](https://github.com/BaptistaGabriel)
+
+Kauan Farias: [@kakafariaZ](https://github.com/kakafariaZ)
+
+Márcio Roberto: [@MarcioDzn](https://github.com/MarcioDzn)
+
 ## 1. Sobre <a id="sobre"></a>
 
 ### 1.1 Objetivo
@@ -375,11 +383,3 @@ $ make all
 - Datasheet - LCD HD44780U: https://www.sparkfun.com/datasheets/LCD/HD44780.pdf. Acesso em 27 dez. 2023
 - Smith S. (2019). Raspberry Pi Assembly Language Programming.
 - Repositório [TimerAssembly](https://github.com/AssemblyTimer/TimerAssembly) usado como referência.
-
-## Equipe
-
-Gabriel Baptista -> [@BaptistaGabriel](https://github.com/BaptistaGabriel)
-
-Kauan Farias -> [@kakafariaZ](https://github.com/kakafariaZ)
-
-Márcio Roberto -> [@MarcioDzn](https://github.com/MarcioDzn)
