@@ -44,7 +44,7 @@ Márcio Roberto: [@MarcioDzn](https://github.com/MarcioDzn)
 ### 1.1 Objetivo
 
 Desenvolver de uma interface para um sensor de temperatura e umidade, projetada para ser utilizada em Single Board Computers (SBC) baseados na arquitetura ARM. Esta interface visa possibilitar a leitura e controle eficientes dos dados de temperatura e umidade, oferecendo uma solução integrada para a obtenção dessas informações em placas ARM específicas.</br>
-Alguns requisitos devem ser cumpridos durante o desenvolvimento, como:
+Alguns requisitos deveriam ser cumpridos ao fim do desenvolvimento, como:
 - O código deve ser escrito em Assembly;
 - O sistema só poderá utilizar os componentes disponíveis no protótipo.
 
