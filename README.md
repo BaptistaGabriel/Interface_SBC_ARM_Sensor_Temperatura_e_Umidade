@@ -41,7 +41,7 @@ Márcio Roberto: [@MarcioDzn](https://github.com/MarcioDzn)
 
 ## 1. Sobre <a id="sobre"></a>
 
-### 1.1 Objetivo
+### 1.1. Objetivo
 
 Desenvolver de uma interface para um sensor de temperatura e umidade, projetada para ser utilizada em Single Board Computers (SBC) baseados na arquitetura ARM. Esta interface visa possibilitar a leitura e controle eficientes dos dados de temperatura e umidade, oferecendo uma solução integrada para a obtenção dessas informações em placas ARM específicas.</br>
 Alguns requisitos deveriam ser cumpridos ao fim do desenvolvimento, como:
@@ -49,7 +49,7 @@ Alguns requisitos deveriam ser cumpridos ao fim do desenvolvimento, como:
 - O sistema só poderá utilizar os componentes disponíveis no protótipo.
 
 
-### 1.2 Materiais utilizados
+### 1.2. Materiais utilizados
 
 - Orange Pi PC PLUS
 - LCD HD44780U
@@ -84,7 +84,7 @@ Os registradores são encontrados a partir da soma de um offset específico com 
 
 Com base nisso, a manipulação, de maneira geral, dos módulos utilizados no projeto, com exceção do LCD, se dá a partir da modificação de determinados bits em registradores específicos. Tal modificação ocorre através de máscaras de bits, as quais permitem a alteração de parte dos dados sem comprometer os demais.
 
-### 2.3 CCU <a id="ccu"></a>
+### 2.3. CCU <a id="ccu"></a>
 
 A Unidade de Controle de Relógio (CCU) permite a manipulação da geração, divisão, distribuição e sincronização de sinais de relógio. Dessa forma, a partir desses sinais, é possível garantir o correto funcionamento de diversos componentes do sistema.
 
@@ -163,14 +163,14 @@ Utilizando arquivo supracitado e outros argumentos, como o endereço base e tama
 Nesse sentido, a partir do mapeamento de memória é possível ter acesso a determinadas portas, que permitem a manipulação e configuração de pinos e funcionalidades.
 
 
-### 4.1 GPIO <a id="GPIO"></a>
+### 4.1. GPIO <a id="GPIO"></a>
 Para manipular certos pinos, como os referentes aos botões e as entradas de dados do display LCD, tornou-se necessário trabalhar com o módulo GPIO (General Purpose Input/Output). Dessa forma, após realizar o mapeamento deste módulo, obteve-se acesso às suas portas.</br>
 
 As portas utilizadas durante a manipulação do GPIO são a A e a G, segundo o datasheet da OrangePI PC Plus. Cada tipo de porta contém alguns registradores de configuração, para ajuste dos pinos, e um registrador de dados, referente ao estado atual de um pino.</br>
 
 Cada registrador está em algum local da memória, e para encontrá-lo é necessário utilizar um offset específico associado a ele. A partir da soma desse offset com o endereço base encontra-se o registro buscado. Dentro de cada registrador há diversos conjuntos de bits, sendo que, cada um deles, no caso da GPIO, está associado a um determinado pino específico.
 
-### 4.2 Manipulação de um pino <a id="manipulacaoDeUmPino"></a>
+### 4.2. Manipulação de um pino <a id="manipulacaoDeUmPino"></a>
 Nesse sentido, para manipular um determinado pino, é necessário buscar seu registrador correspondente, e em seguida, dentro desse registro, modificar seu respectivo conjunto de bits. Para registradores de configuração a quantidade de bits referente a cada pino é 3, já para os de dados é apenas 1.
 
 <div align='center'>
@@ -180,7 +180,7 @@ Nesse sentido, para manipular um determinado pino, é necessário buscar seu reg
 
 As modificações utilizadas no projeto se referem a alterar o modo de um pino para entrada, saída ou UART, por meio de um registrador de configuração. Além disso, é possível capturar o estado de um pino ou alterá-lo para alto ou baixo, por meio do registrador de dados. 
 
-### 4.3 Funções e Macros <a id="GPIOFuncoesEMacros"></a>
+### 4.3. Funções e Macros <a id="GPIOFuncoesEMacros"></a>
 
 O módulo GPIO, no protótipo, foi utilizado principalmente para o envio de dados para o LCD, configuração da UART e verificação do estado de certos botões. Algumas macros utilizadas na implementação foram:
 
@@ -196,7 +196,7 @@ O módulo GPIO, no protótipo, foi utilizado principalmente para o envio de dado
 
 A UART é o protocolo utilizado para transmissão e recepção de dados entre a ESP32 e a OrangePi PC Plus. Para utilizar corretamente a UART disponível na OrangePi, faz-se necessário, inicialmente, configurá-la. A configuração se dá através da manipulação de registradores específicos dos módulos GPIO, CCU e UART.
 
-### 5.1 Configuração do Clock <a id="configuracaoDoClock"></a>
+### 5.1. Configuração do Clock <a id="configuracaoDoClock"></a>
 
 O primeiro passo para a configuração da UART é o direcionamento do clock para a mesma. Para tanto, é necessário manipular alguns registradores disponíveis no módulo da CCU, a fim de habilitar o clock correto, e transmiti-lo para a UART. Além disso, também há a necessidade de resetá-la durante essa etapa.
 
@@ -205,7 +205,7 @@ O primeiro passo para a configuração da UART é o direcionamento do clock para
 ![image](https://github.com/BaptistaGabriel/Interface_SBC_ARM_Sensor_Temperatura_e_Umidade/assets/91295529/298905aa-3397-4936-92d4-c85779a6410d)
 </div>
 
-### 5.2 Configuração da UART <a id="configuraçãoDaUART"></a>
+### 5.2. Configuração da UART <a id="configuraçãoDaUART"></a>
 
 Ademais, faz-se necessário configurar os pinos de transmissão e recepção de dados para o modo UART_TX e UART_RX, sendo eles o PA13 e o PA14, respectivamente.
 
@@ -218,7 +218,7 @@ Outrossim, é importante definir quantos bits serão enviados e recebidos, confi
 
 A configuração correta do baud rate se dá a partir da atribuição de um divisor nos registradores DLH e DLL, os quais devem ser previamente habilitados. Para encontrar o valor desse divisor é necessário utilizar a equação `baud rate = taxa de clock / (16 * divisor)`, na qual a taxa clock é 624MHz e o baud rate 9600 bit/s.
 
-### 5.3 UART - Transmissão e recepção de dados <a id="transmissaoERecepcao"></a>
+### 5.3. UART - Transmissão e recepção de dados <a id="transmissaoERecepcao"></a>
 
 Para a transmissão de dados utilizou-se o registrador THR (Transmit Holding Register), o qual recebe um byte e o coloca em uma FIFO, para ser enviado de maneira serial. Já para receber as informações, necessitou-se manipular o registrador RBR (Receiver Buffer Register), que armazena 8 bits de dados que chegam da FIFO. Para garantir o recebimento correto dos dados fez-se necessário verificar se a FIFO contém algo antes de tentar carregar algum valor do RBR.
 
@@ -227,7 +227,7 @@ Para a transmissão de dados utilizou-se o registrador THR (Transmit Holding Reg
 ![image](https://github.com/BaptistaGabriel/Interface_SBC_ARM_Sensor_Temperatura_e_Umidade/assets/91295529/4e41577b-b090-4bc2-9bfa-8b65b14a045e)
 </div>
 
-### 5.4 UART - Funções e Macros <a id="UARTFuncoesEMacros"></a>
+### 5.4. UART - Funções e Macros <a id="UARTFuncoesEMacros"></a>
 
 Alguns macros utilizados para a implementação dos conceitos supracitados foram:
 
@@ -255,7 +255,7 @@ Os dados enviados podem ser amazenados em dois tipos de registradores, o IR (Ins
 Como a interface de dados é de 4 bits, apenas 4 pinos de transferência são usados, indo do DB7 ao DB4. Para a transferência de dados, os 4 bits de ordem mais alta (DB4 a DB7) são enviados antes dos 4 bits de ordem mais baixa, os quais seriam DB0 a DB3, para uma interface de 8 bits. Dessa forma, os pinos a serem utilizados para envio de informações são apenas D7 a D4, sendo D3, D2, D1 e D0 substituídos por D7, D6, D5 e D4, respectivamente.
 
 
-### 6.1 Inicialização <a id="inicializacao"></a>
+### 6.1. Inicialização <a id="inicializacao"></a>
 
 O primeiro passo para a utilização do display é inicializá-lo, a partir de um conjunto específico de instruções e de uma temporização correta. Estas podem ser encontrados no datasheet do display em questão.
 
@@ -264,7 +264,7 @@ O primeiro passo para a utilização do display é inicializá-lo, a partir de u
 ![image](https://github.com/BaptistaGabriel/Interface_SBC_ARM_Sensor_Temperatura_e_Umidade/assets/91295529/2f6fb07c-f293-4d84-8bcd-0056b49af762)
 </div>
 
-### 6.2 Instruções <a id="instrucoes"></a>
+### 6.2. Instruções <a id="instrucoes"></a>
 
 Para realizar o envio de instruções, é necessário transmitir dados convenientes através dos pinos DB7 a DB4, seguido de pulsos de habilitação.
 
@@ -273,7 +273,7 @@ Para realizar o envio de instruções, é necessário transmitir dados convenien
 ![image](https://github.com/BaptistaGabriel/Interface_SBC_ARM_Sensor_Temperatura_e_Umidade/assets/91295529/80b804ac-e249-450d-aa98-63784e3ef63b)
 </div>
 
-### 6.3 Escrita de Caractere <a id="escritaDeCaractere"></a>
+### 6.3. Escrita de Caractere <a id="escritaDeCaractere"></a>
 
 Outra ação importante é a escrita de dados na tela, a qual segue um princípio semelhante ao envio de instruções, com a transferência de dados a partir dos pinos DB7 a DB4. Entretanto, além de atribuir nível alto ao pino RS, para modo de envio de dados, configurações adicionais do LCD são necessárias.
 
@@ -284,7 +284,7 @@ Os dados enviados devem corresponder a um ASCII (um byte) referente a um caracte
 ![image](https://github.com/BaptistaGabriel/Interface_SBC_ARM_Sensor_Temperatura_e_Umidade/assets/91295529/d7133b4e-9e39-46e6-b4f7-eb09c7885e95)
 </div>
 
-### 6.4 LCD - Funções e Macros <a id="LCDFuncoesEMacros"></a>
+### 6.4. LCD - Funções e Macros <a id="LCDFuncoesEMacros"></a>
 
 O LCD tem fundamental importância em servir como uma interface amigável para o usuário, fornecendo opções de escolha de sensor e de tipo de sensoriamento. Ademais, exibe as informações solicitadas de maneira clara e concisa. Para a implementação do display no projeto, utilizou-se alguns macros, tanto para a inicialização quanto para o envio de instruções e dados, como:
 
