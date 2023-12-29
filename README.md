@@ -206,7 +206,7 @@ Ademais, faz-se necessário configurar os pinos de transmissão e recepção de 
 ![image](https://github.com/BaptistaGabriel/Interface_SBC_ARM_Sensor_Temperatura_e_Umidade/assets/91295529/21b1044b-b85e-41b7-96f4-80a0afbff86f)
 </div>
 
-A configuração correta do baud rate se dá a partir da atribuição de um divisor nos registradores DLH e DLL, os quais devem ser previamente habilitados. Para encontrar o valor desse divisor é necessário utilizar a equação baud rate = taxa de clock16divisor, na qual a taxa clock é 624MHz e o baud rate 9600 bit/s.
+A configuração correta do baud rate se dá a partir da atribuição de um divisor nos registradores DLH e DLL, os quais devem ser previamente habilitados. Para encontrar o valor desse divisor é necessário utilizar a equação `baud rate = taxa de clock / (16 * divisor)`, na qual a taxa clock é 624MHz e o baud rate 9600 bit/s.
 
 ### 5.3 UART - Transmissão e recepção de dados <a id="transmissaoERecepcao"></a>
 
