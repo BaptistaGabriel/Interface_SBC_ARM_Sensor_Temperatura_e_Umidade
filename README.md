@@ -27,7 +27,8 @@
 9.  [Modulos do Projeto](#modulosDoProjeto)
 10.  [MakeFile](#makeFile)
 11.  [Conclusão](#conclusao)
-12.  [Referências](#referencias)
+12.  [Como Executar](#como_executar)
+13.  [Referências](#referencias)
 
 ## 1. Sobre: <a id="sobre"></a>
 
@@ -323,7 +324,15 @@ Nesse sentido, a integração dos elementos necessários formam um sistema funci
  
 Por fim, o projeto desenvolvido ajudou a compreender conceitos importantes relacionados à linguagem Assembly e a recursos de hardware que podem ser manipulados a partir da mesma, tal qual a OrangePi PC Plus.
 
-## 12. Referências: <a id="referencias"></a> 
+## 12. Como executar: <a id="como_executar"></a> 
+### Ambiente de Trabalho
+Abra um ambiente de trabalho adequado para manipular a OrangePi PC Plus
+### Compile o projeto
+```bash
+$ make all
+```
+
+## 13. Referências: <a id="referencias"></a> 
 - Datasheet - Allwinner H3: https://drive.google.com/file/d/1AV0gV4J4V9BVFAox6bcfLu2wDwzlYGHt/view. Acesso em 27 dez. 2023
 - Datasheet - LCD HD44780U: https://www.sparkfun.com/datasheets/LCD/HD44780.pdf. Acesso em 27 dez. 2023
 - Smith S. (2019). Raspberry Pi Assembly Language Programming.
