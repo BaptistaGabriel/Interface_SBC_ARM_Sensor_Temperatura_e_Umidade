@@ -3,7 +3,7 @@
 # 💻Interface para um sensor de Temperatura e Umidade SBC ARM🌡️
 </div>
 
-## Indice:
+## Índice:
 1.  [Sobre](#sobre)
 2.  [Visão Geral](#visaoGeral)
       - 2.1. [Linguagem Assembly](#linguagemAssembly)
@@ -74,7 +74,7 @@ O funcionamento do protótipo se dá a partir da configuração inicial e habili
 
 Para desenvolver o projeto utilizou-se o Assembly, uma linguagem de baixo nível que visa abstrair a linguagem de máquina, de difícil compreensão. Nesse sentido, a partir de mnemônicos do Assembly, o desenvolvedor pode ter um melhor entendimento do código.
 
-A partir da linguagem Assembly é possível controlar o hardware do sistema, a partir da manipulação de dados e operações aritméticas, por exemplo.
+Utilizando a linguagem Assembly é possível controlar o hardware do sistema, por meio da manipulação de dados e operações aritméticas, por exemplo.
 
 ### 2.2. Registradores <a id="registradores"></a>
 
@@ -116,16 +116,16 @@ Após a solicitação, são exibidas as telas da camada B, onde se encontram os 
 ![image](https://github.com/BaptistaGabriel/Interface_SBC_ARM_Sensor_Temperatura_e_Umidade/assets/91295529/f3a41e29-4f34-42d6-93d4-e6798a25997d)
 </div>
 
-Por fim, existem as camadas intermediárias, responsáveis por indicar se alguma ação está sendo executada, como o fim do sensoriamento contínuo, ou se houve algum erro durante o sensoriamento.
+Por fim, existem as camadas intermediárias, responsáveis por indicar se alguma ação está sendo executada, como o fim do sensoriamento contínuo, ou se houve algum erro.
 
 <div align='center'>
 
 ![image](https://github.com/BaptistaGabriel/Interface_SBC_ARM_Sensor_Temperatura_e_Umidade/assets/91295529/7c1a8e6d-7802-433b-8c10-e56040496a94)
 </div>
 
-A fim de controlar a mudança de telas no LCD utilizou-se botões específicos, tanto alterar as páginas de uma mesma camada quanto para selecionar uma opção e passar para uma outra camada. De maneira intuitiva, os botões da direita e da esquerda alteram entre opções e o do meio modifica a camada.
+A fim de controlar a mudança de telas no LCD utilizou-se botões específicos, tanto alterar as páginas de uma mesma camada quanto para selecionar uma opção e passar para uma outra. De maneira intuitiva, os botões da direita e da esquerda alteram entre opções e o do meio modifica a camada.
 
-Logo abaixo é possível observar alguns vídeos que exemplificam o funcionamento real do protótipo.
+Logo abaixo é possível observar alguns vídeos que demonstram o funcionamento real do protótipo.
 - Escolha de sensor
 <div align='center'>
 
@@ -149,7 +149,7 @@ Logo abaixo é possível observar alguns vídeos que exemplificam o funcionament
 
 
 ## 4. Mapeamento de Memória e GPIO <a id="mapeamentoDeMemoriaEGPIO"></a>
-Para manipular os componentes importantes da OrangePI PC Plus necessários ao projeto, como os pinos e a UART, é necessário realizar o mapeamento de memória dos seus respectivos módulos. Cada módulo tem um endereço base, sendo dividido em páginas de tamanho determinado. Tanto para o GPIO, quanto para a UART e o CCU, cada página tem o tamanho de 1k.</br>
+Para manipular os componentes da OrangePI PC Plus necessários ao projeto, como o GPIO e a UART, é necessário realizar o mapeamento de memória dos seus respectivos módulos. Cada módulo tem um endereço base, sendo dividido em páginas de tamanho determinado. Tanto para o GPIO, quanto para a UART e o CCU, cada página tem o tamanho de 1k.</br>
 Os endereços base utilizados foram:
 
 - UART: 0x1C20000
@@ -158,15 +158,15 @@ Os endereços base utilizados foram:
   
 O primeiro passo para realizar o mapeamento é ter acesso a um arquivo que dá acesso à memória física da OrangePi PC Plus, o `/dev/mem`. Para abrir esse arquivo é preciso utilizar a chamada de sistema `open`, que retorna um descritor de arquivo, o qual poderá ser usado para acessá-lo.</br>
 
-Utilizando arquivo supracitado e outros argumentos como o endereço base e tamanho da página é possível realizar o mapeamento em si, por meio da chamada de sistema `mmap2`. O seu retorno é o endereço virtual mapeado, o endereço base, que poderá ser utilizado como base para encontrar determinados registradores.</br>
+Utilizando arquivo supracitado e outros argumentos, como o endereço base e tamanho da página, é possível realizar o mapeamento em si, por meio da chamada de sistema `mmap2`. O seu retorno é o endereço virtual mapeado, o endereço base, que poderá ser utilizado como base para encontrar determinados registradores.</br>
 
-Nesse sentido, a partir do mapeamento de memória é possível ter acesso a determinadas portas, que permitem a manipulação e configuração de certos pinos e funcionalidades.
+Nesse sentido, a partir do mapeamento de memória é possível ter acesso a determinadas portas, que permitem a manipulação e configuração de pinos e funcionalidades.
 
 
 ### 4.1 GPIO <a id="GPIO"></a>
 Para manipular certos pinos, como os referentes aos botões e as entradas de dados do display LCD, tornou-se necessário trabalhar com o módulo GPIO (General Purpose Input/Output). Dessa forma, após realizar o mapeamento deste módulo, obteve-se acesso às suas portas.</br>
 
-As portas utilizadas durante a manipulação do GPIO são a A e a G, segundo o datasheet da OrangePI PC Plus. Cada tipo de porta contém alguns registradores de configuração, para configurar os pinos, além de um registrador de dados, referente ao estado atual de um pino.</br>
+As portas utilizadas durante a manipulação do GPIO são a A e a G, segundo o datasheet da OrangePI PC Plus. Cada tipo de porta contém alguns registradores de configuração, para ajuste dos pinos, e um registrador de dados, referente ao estado atual de um pino.</br>
 
 Cada registrador está em algum local da memória, e para encontrá-lo é necessário utilizar um offset específico associado a ele. A partir da soma desse offset com o endereço base encontra-se o registro buscado. Dentro de cada registrador há diversos conjuntos de bits, sendo que, cada um deles, no caso da GPIO, está associado a um determinado pino específico.
 
@@ -198,7 +198,7 @@ A UART é o protocolo utilizado para transmissão e recepção de dados entre a 
 
 ### 5.1 Configuração do Clock <a id="configuracaoDoClock"></a>
 
-   O primeiro passo para a configuração da UART é o direcionamento do clock para a mesma. Para tanto, é necessário manipular alguns registradores disponíveis no módulo da CCU, a fim de habilitar o clock correto, e transmiti-lo para a UART. Além disso, também há a necessidade de resetá-la durante essa etapa.
+O primeiro passo para a configuração da UART é o direcionamento do clock para a mesma. Para tanto, é necessário manipular alguns registradores disponíveis no módulo da CCU, a fim de habilitar o clock correto, e transmiti-lo para a UART. Além disso, também há a necessidade de resetá-la durante essa etapa.
 
 <div align='center'>
 
@@ -207,7 +207,9 @@ A UART é o protocolo utilizado para transmissão e recepção de dados entre a 
 
 ### 5.2 Configuração da UART <a id="configuraçãoDaUART"></a>
 
-Ademais, faz-se necessário configurar os pinos de transmissão e recepção de dados para o modo UART_TX e UART_RX, sendo eles o PA13 e o PA14, respectivamente. Além disso, é importante definir quantos bits serão enviados e recebidos, configurar o baud rate e habilitar os FIFOs necessários.
+Ademais, faz-se necessário configurar os pinos de transmissão e recepção de dados para o modo UART_TX e UART_RX, sendo eles o PA13 e o PA14, respectivamente.
+
+Outrossim, é importante definir quantos bits serão enviados e recebidos, configurar o baud rate e habilitar os FIFOs necessários.
 
 <div align='center'>
 
@@ -218,7 +220,7 @@ A configuração correta do baud rate se dá a partir da atribuição de um divi
 
 ### 5.3 UART - Transmissão e recepção de dados <a id="transmissaoERecepcao"></a>
 
-Para a transmissão de dados utilizou-se o registrador THR, o qual recebe um byte e o coloca em uma FIFO, para ser enviado de maneira serial. Já para receber as informações, necessitou-se manipular o registrador RBR, que armazena 8 bits de dados que chegam da FIFO. Para garantir o recebimento correto dos dados fez-se necessário verificar se a FIFO contém algo antes de tentar carregar algum valor do RBR.
+Para a transmissão de dados utilizou-se o registrador THR (Transmit Holding Register), o qual recebe um byte e o coloca em uma FIFO, para ser enviado de maneira serial. Já para receber as informações, necessitou-se manipular o registrador RBR (Receiver Buffer Register), que armazena 8 bits de dados que chegam da FIFO. Para garantir o recebimento correto dos dados fez-se necessário verificar se a FIFO contém algo antes de tentar carregar algum valor do RBR.
 
 <div align='center'>
 
@@ -244,13 +246,13 @@ Alguns macros utilizados para a implementação dos conceitos supracitados foram
 Um requisito fundamental do projeto é a exibição de um menu amigável no LCD, o qual deve conter textos que se refiram tanto às opções disponíveis quanto aos dados obtidos do sensor. Para isso, utilizou-se o LCD HD44780U, que contém duas linhas e pode manifestar 16 caracteres em cada. 
 
 Para manipular o display é necessário enviar determinados valores a ele, que podem ser instruções ou dados a serem exibidos. Nesse sentido, alguns pinos são requisitados para realizar essa transmissão da maneira correta, como: 
-- `RS`: responsável por selecionar entre o registrador de instrução e o de dados; RS = 0 para envio de instruções e RS = 1 para envio de dados.
-- `DB7 a DB4`: usados para transferência de dados entre a MPU e o LCD.
-- `E`: habilita a leitura ou a escrita de dados.
+- `RS` - responsável por selecionar entre o registrador de instrução e o de dados; `RS = 0` para envio de instruções e `RS = 1` para envio de dados.
+- `DB7 a DB4` - responsdáveis pela transferência de dados entre a MPU e o LCD.
+- `E` - responsável por habilitar a leitura ou a escrita de dados.
 
 Os dados enviados podem ser amazenados em dois tipos de registradores, o IR (Instruction Register) ou DR (Data Register). As insformações transferidas ao DR são automaticamente enviados ao DDRAM, o buffer de dados do LCD, cujos endereços se referem a uma posição do display.
 
-Como a interface de dados é de 4 bits, apenas 4 pinos de transferência são usados, indo do DB7 ao DB4. Para a transferência de dados, os 4 bits de ordem mais alta (DB4 a DB7) são enviados antes dos 4 bits de ordem mais baixa, os quais seriam DB0 a DB3, para uma interface de 8 bits. Dessa forma, os pinos a serem utilizados para envio de informações são apenas D7 a D4, sendo D3, D2, D1 e D0 também referidos por D7, D6, D5 e D4, respectivamente.
+Como a interface de dados é de 4 bits, apenas 4 pinos de transferência são usados, indo do DB7 ao DB4. Para a transferência de dados, os 4 bits de ordem mais alta (DB4 a DB7) são enviados antes dos 4 bits de ordem mais baixa, os quais seriam DB0 a DB3, para uma interface de 8 bits. Dessa forma, os pinos a serem utilizados para envio de informações são apenas D7 a D4, sendo D3, D2, D1 e D0 substituídos por D7, D6, D5 e D4, respectivamente.
 
 
 ### 6.1 Inicialização <a id="inicializacao"></a>
@@ -264,7 +266,7 @@ O primeiro passo para a utilização do display é inicializá-lo, a partir de u
 
 ### 6.2 Instruções <a id="instrucoes"></a>
 
-Para realizar o envio de instruções, individualmente, é necessário transmitir dados convenientes através dos pinos DB7 a DB4, seguido de pulsos de habilitação.
+Para realizar o envio de instruções, é necessário transmitir dados convenientes através dos pinos DB7 a DB4, seguido de pulsos de habilitação.
 
 <div align='center'>
   
@@ -346,34 +348,36 @@ Desta forma, diversos testes foram realizados observando sua requisição, bem c
 ## 8. Modulos do Projeto <a id="modulosDoProjeto"></a>
 Os módulos criados para realizar a implementação completa do protótipo são:
 
-- `uart.s`: Contém funções referentes à manipulação e configuração da UART, bem como seu mapeamento e o do CCU.
-- `lcd.s`: Contém macros necessários à manipulação do display LCD, como inicialização e instruções.
-- `gpio.s`: Contém macros referentes ao mapeamento da GPIO e à manipulação dos pinos.
-- `sleep.s`: Contém uma macro de temporização, utilizada em outros módulos para fins diversos.
-- `split.s`: Contém funções que separam um valor numérico em dezena e unidade
-- `main.s`: Integra todas as macros e funções a fim de permitir o funcionamento completo do sistema a partir de uma lógica principal. Nela se encontra a implementação da interface de usuário.
+- `uart.s` - Contém funções referentes à manipulação e configuração da UART, bem como seu mapeamento e o do CCU.
+- `lcd.s` - Contém macros necessários à manipulação do display LCD, como inicialização e instruções.
+- `gpio.s` - Contém macros referentes ao mapeamento da GPIO e à manipulação dos pinos.
+- `sleep.s` - Contém uma macro de temporização, utilizada em outros módulos para fins diversos.
+- `split.s` - Contém funções que separam um valor numérico em dezena e unidade
+- `main.s` - Integra todas as macros e funções a fim de permitir o funcionamento completo do sistema a partir de uma lógica principal. Nela se encontra a implementação da interface de usuário.
 
 ## 9. MakeFile <a id="makeFile"></a>
 
 
 Para facilitar a compilação e a execução do programa criou-se um makefile, o qual:
 
-- Converte o código assembly (.s) em um arquivo objeto (.o), com o assembler
-- “Linka” o arquivo objeto e gera o executável
-- Executa o programa
+- Converte o código assembly (.s) em um arquivo objeto (.o), com o assembler.
+- “Linka” o arquivo objeto e gera o executável.
+- Executa o programa.
 
 ## 10. Conclusão <a id="conclusao"></a>
 
 Ao fim do desenvolvimento todos os requisitos foram cumpridos, e o sistema funcionou como esperado. Tal fato se dá devido a correta aplicação dos conceitos aprendidos durante o período de desenvolvimento.
 
-Nesse sentido, a integração dos elementos necessários formam um sistema funcional que exibe corretamente as informações solicitadas. Tais elementos são: a UART, para comunicação de dados, o GPIO para manipulação dos pinos de entrada e saída e o display LCD para exibição de dados para o usuário.
+Nesse sentido, a integração dos elementos necessários forma um sistema funcional que exibe corretamente as informações solicitadas. Tais elementos são: a UART, para comunicação de dados, o GPIO para manipulação dos pinos de entrada e saída e o display LCD para exibição de dados para o usuário.
  
 Por fim, o projeto desenvolvido ajudou a compreender conceitos importantes relacionados à linguagem Assembly e a recursos de hardware que podem ser manipulados a partir da mesma, tal qual a OrangePi PC Plus.
 
 ## 11. Como executar <a id="comoExecutar"></a> 
 ### Ambiente de Trabalho
-Abra um ambiente de trabalho adequado para manipular a OrangePi PC Plus
-### Compile o projeto
+Abra um ambiente de trabalho adequado para manipular a OrangePi PC Plus.
+### Compilação do projeto
+1) Navegue até o diretório do projeto usando o terminal.
+2) Execute o comando abaixo:
 ```bash
 $ make all
 ```
